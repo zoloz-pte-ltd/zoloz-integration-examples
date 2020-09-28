@@ -28,12 +28,12 @@
         <artifactId>zoloz-example-parent</artifactId>
         <groupId>com.zoloz.example</groupId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zoloz.example</groupId>
-    <artifactId>zoloz-idrecognize-example</artifactId>
+    <artifactId>zoloz-privacydelete-example</artifactId>
 
     <dependencies>
         <dependency>

@@ -10,17 +10,17 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <!-- BEGIN servermode examples -->
-        <module>src/examples/facecompare</module>
-        <module>src/examples/idrecognize</module>
+        <module>basic/facecompare</module>
+        <module>basic/idrecognize</module>
+        <module>basic/privacyinfodelete</module>
         <!-- END servermode examples -->
 
         <!-- BEGIN clientmode examples -->
-        <module>src/examples/clientmode-bizserver</module>
+        <module>basic/clientmode-bizserver</module>
         <!-- END clientmode examples -->
 
         <!-- BEGIN examples of complicated combination -->
-        <module>src/examples/webekyc-demo</module>
-        <module>src/examples/privacyinfodelete</module>
+        <module>advanced/webekyc-demo</module>
         <!-- END examples of complicated combination -->
     </modules>
 
