@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * realid configuraiton
+ * product configuration
  *
  * @Author: jushi
  * @Date: 2020-05-08 10:32
@@ -39,13 +39,13 @@ public class ProductConfig {
      * document type, passport by default
      */
     @Getter
-    @Value("${realid.doctype:00000001003}")
+    @Value("${product.doctype:00000001003}")
     private String docType = "00000001003";
 
     /**
      * serviceLevel
      */
     @Getter
-    @Value("${realid.serviceLevel:REALID0001}")
+    @Value("${product.serviceLevel:REALID0001}")
     private String serviceLevel;
 }
