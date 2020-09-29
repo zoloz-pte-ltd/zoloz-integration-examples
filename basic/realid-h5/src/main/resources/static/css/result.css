@@ -1,0 +1,109 @@
+
+body {
+  padding: 0;
+  margin: 0;
+  color: #282828;
+  font-size: 16px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.routerView {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #F9F9F9;
+}
+
+.routerView .zNavigationBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  background-color: #0064FF;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 44px;
+}
+.routerView #interrupt {
+  display: none;
+  text-align: center;
+}
+.routerView #interrupt .topPadding {
+  padding: 16px 0 0;
+}
+
+.routerView #interrupt .topPadding .svgImg {
+  width: 48px;
+}
+.routerView .resultMainContainer {
+  -webkit-box-flex: 1;
+  flex: 1;
+  padding-top: 16px;
+}
+.routerView .footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  padding: 4px 5% 16px;
+}
+.routerView .footer .zBottomButton {
+  width: 100%;
+  border: 2px solid #0064FF;
+  background-color: #0064FF;
+  color: white;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+
+.resultMainContainer {
+  flex: 1;
+  padding: 60px 0px 0;
+}
+
+.imageContainer {
+  padding: 12px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.docImage {
+  padding: 0 5%;
+  width: 35%;
+}
+
+.faceImage {
+  padding: 0 5%;
+  width: 30%;
+}
+
+.headerContainer {
+  padding: 8px 16px;
+  min-height: 28px;
+  background-color: white;  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.textContainer {
+  padding: 8px 16px;
+  min-height: 28px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftText {
+  min-width: 30%;
+}
+
+.rightText {
+  text-align: right;
+  color: gray;
+}

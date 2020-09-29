@@ -9,20 +9,19 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <!-- BEGIN servermode examples -->
-        <module>basic/facecompare</module>
-        <module>basic/idrecognize</module>
-        <module>basic/privacyinfodelete</module>
-        <!-- END servermode examples -->
+        <module>basic/facecompare-api</module>
 
-        <!-- BEGIN clientmode examples -->
-        <module>basic/clientmode-bizserver</module>
-        <!-- END clientmode examples -->
+        <module>basic/facecapture-native</module>
+        <!--<module>basic/facecapture-h5</module>-->
 
-        <!-- BEGIN h5mode-bizserver examples -->
-        <module>basic/h5mode-bizserver</module>
-        <!-- END h5mode-bizserver examples -->
+        <module>basic/idrecognize-api</module>
+        <module>basic/idrecognize-native</module>
+        <!--<module>basic/idrecognize-h5</module>-->
 
+        <module>basic/realid-native</module>
+        <module>basic/realid-h5</module>
+
+        <module>basic/privacydelete-api</module>
 
         <!-- BEGIN examples of complicated combination -->
         <module>advanced/webekyc-demo</module>
