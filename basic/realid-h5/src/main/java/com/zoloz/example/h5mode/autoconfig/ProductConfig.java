@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
  * @Date: 2020-05-08 10:32
  */
 @Configuration
-public class RealIdConfig {
+public class ProductConfig {
 
     /**
      * document type, passport by default

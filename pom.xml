@@ -12,21 +12,16 @@
         <module>basic/facecompare-api</module>
 
         <module>basic/facecapture-native</module>
-        <module>basic/facecapture-h5</module>
+        <!--<module>basic/facecapture-h5</module>-->
 
         <module>basic/idrecognize-api</module>
         <module>basic/idrecognize-native</module>
-        <module>basic/idrecognize-h5</module>
+        <!--<module>basic/idrecognize-h5</module>-->
 
         <module>basic/realid-native</module>
         <module>basic/realid-h5</module>
 
         <module>basic/privacydelete-api</module>
-
-        <!-- BEGIN h5mode-bizserver examples -->
-        <module>basic/h5mode-bizserver</module>
-        <!-- END h5mode-bizserver examples -->
-
 
         <!-- BEGIN examples of complicated combination -->
         <module>advanced/webekyc-demo</module>

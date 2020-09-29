@@ -14,7 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import com.zoloz.api.sdk.client.OpenApiClient;
-import com.zoloz.example.h5mode.autoconfig.RealIdConfig;
+import com.zoloz.example.h5mode.autoconfig.ProductConfig;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class H5ClientModeController {
     private OpenApiClient openApiClient;
 
     @Autowired
-    private RealIdConfig realIdConfig;
+    private ProductConfig realIdConfig;
 
     @RequestMapping(value = "/initialize", method = RequestMethod.POST)
     public JSONObject h5RealIdInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
