@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>web-realid</title>
+  <link rel="stylesheet" type="text/css" href="./css/result.css">
+</head>
+<body>
+  <div class="routerView">
+    <div class="zNavigationBar">Verification Result</div>
+    <div id="interrupt" class="resultMainContainer">
+      <div class="topPadding">
+        <img class='svgImg' src="./image/intterupt.svg">
+      </div>
+      <div class="topPadding">
+        User Interrupt!
+      </div>
+    </div>
+    <div id="resultMain" class="resultMainContainer">
+      <div class="imageContainer">
+        <img class='docImage' id="docImage" src=""/>
+        <img class='faceImage' id="faceImage" src=""/>
+      </div>      
+      <div class="headerContainer">
+        <div class="leftText">Ekyc Result</div>
+        <div class="rightText" id="ekycResult">-</div>
+      </div>
+      <div class="textContainer">
+        <div class="leftText">Score</div>
+        <div class="rightText" id="score">-</div>
+      </div>
+      <div class="textContainer">
+        <div class="leftText">Risk</div>
+        <div class="rightText" id="risk">-</div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="zBottomButton" onclick="okClick()">OK</div>
+    </div>
+  </div>
+</body>
+
+<script src="./js/utils.js"></script>
+<script src="./pagejs/result.js"></script>
+
+</html>
