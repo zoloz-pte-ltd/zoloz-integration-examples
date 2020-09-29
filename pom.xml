@@ -19,9 +19,16 @@
         <module>basic/clientmode-bizserver</module>
         <!-- END clientmode examples -->
 
+        <!-- BEGIN h5mode-bizserver examples -->
+        <module>basic/h5mode-bizserver</module>
+        <!-- END h5mode-bizserver examples -->
+
+
         <!-- BEGIN examples of complicated combination -->
         <module>advanced/webekyc-demo</module>
         <!-- END examples of complicated combination -->
+
+
     </modules>
 
     <properties>
