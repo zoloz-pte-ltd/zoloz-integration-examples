@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.webrealid.autoconfig;
+package com.zoloz.example.h5mode.autoconfig;
 
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.util.KeyUtil;

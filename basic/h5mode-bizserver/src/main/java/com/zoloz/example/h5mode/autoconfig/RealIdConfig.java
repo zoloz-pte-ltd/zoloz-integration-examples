@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.webrealid.autoconfig;
+package com.zoloz.example.h5mode.autoconfig;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

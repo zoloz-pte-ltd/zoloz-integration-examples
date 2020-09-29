@@ -20,9 +20,9 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.webrealid;
+package com.zoloz.example.h5mode;
 
-import com.zoloz.example.webrealid.autoconfig.ApiClientConfig;
+import com.zoloz.example.h5mode.autoconfig.ApiClientConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

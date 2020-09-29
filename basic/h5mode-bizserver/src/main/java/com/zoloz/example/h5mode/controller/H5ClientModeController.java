@@ -2,7 +2,7 @@
  * Alipay.com Inc.
  * Copyright (c) 2004-2020 All Rights Reserved.
  */
-package com.zoloz.example.webrealid.controller;
+package com.zoloz.example.h5mode.controller;
 
 import java.net.InetAddress;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import com.zoloz.api.sdk.client.OpenApiClient;
-import com.zoloz.example.webrealid.autoconfig.RealIdConfig;
+import com.zoloz.example.h5mode.autoconfig.RealIdConfig;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

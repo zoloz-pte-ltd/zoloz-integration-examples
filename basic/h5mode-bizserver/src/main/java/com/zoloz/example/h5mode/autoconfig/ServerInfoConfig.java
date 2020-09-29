@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.webrealid.autoconfig;
+package com.zoloz.example.h5mode.autoconfig;
 
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
