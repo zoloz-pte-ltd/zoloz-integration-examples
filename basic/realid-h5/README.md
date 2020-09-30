@@ -1,4 +1,6 @@
-# An example of minimum server integrating ZOLOZ RealId (H5) solution
+# ZOLOZ RealId (H5 Mode) 
+
+This is an example of minimum server integrating ZOLOZ RealId (H5) solution
 
 ## Build
 **Prequisites**

@@ -1,4 +1,6 @@
-# An example of recognize document image with ZOLOZ IdRecognize API
+# ZOLOZ IdRecognize API
+
+This is an example of recognizing document image with ZOLOZ IdRecognize API
 
 ## Build
 ### Prequisites

@@ -1,4 +1,6 @@
-# An example of comparing two faces with ZOLOZ FaceCompare API
+# ZOLOZ FaceCompare API
+
+This is an example of comparing two faces with ZOLOZ FaceCompare API
 
 ## Build
 ### Prequisites
