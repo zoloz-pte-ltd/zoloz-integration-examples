@@ -36,9 +36,8 @@ import java.util.Enumeration;
 /**
  * server information listener
  *
- * @Author: jushi
- * @Date: 2020-02-19 16:46
- */
+ * @author Zhang Fang
+  */
 public class ServerInfoListener implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
 
     private Logger logger = LoggerFactory.getLogger(ServerInfoListener.class);

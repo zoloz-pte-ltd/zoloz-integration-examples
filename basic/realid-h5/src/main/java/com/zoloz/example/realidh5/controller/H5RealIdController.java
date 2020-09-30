@@ -25,8 +25,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * Controller providing APIs for front-end
+ *
  * @author chenzc
- * @version $Id: H5RealIdController.java, v 0.1 2020年09月27日 15:32 chenzc Exp $
  */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController

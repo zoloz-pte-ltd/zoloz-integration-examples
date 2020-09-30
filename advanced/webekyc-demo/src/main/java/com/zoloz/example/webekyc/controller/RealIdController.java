@@ -38,9 +38,8 @@ import java.util.Map;
 /**
  * realid api controller
  *
- * @Author: jushi
- * @Date: 2020-02-28 22:05
- */
+ * @author Zhang Fang
+  */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")

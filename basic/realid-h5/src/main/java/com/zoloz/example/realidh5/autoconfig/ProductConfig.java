@@ -29,9 +29,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * product configuration
  *
- * @Author: jushi
- * @Date: 2020-05-08 10:32
- */
+ * @author Zhang Fang
+  */
 @Configuration
 public class ProductConfig {
 

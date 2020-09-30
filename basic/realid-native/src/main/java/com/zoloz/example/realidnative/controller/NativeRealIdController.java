@@ -42,9 +42,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * client mode controller
  *
- * @Author: Zhongyang MA
- * @Date: 2020-01-02 15:38
- */
+ * @author Zhongyang MA
+  */
 @CrossOrigin
 @RestController
 @RequestMapping(value = {"/api"})

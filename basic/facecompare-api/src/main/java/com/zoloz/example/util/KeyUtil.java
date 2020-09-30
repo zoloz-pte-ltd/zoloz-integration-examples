@@ -33,9 +33,8 @@ import org.apache.commons.io.FileUtils;
 /**
  * key loading utility
  *
- * @Author: jushi
- * @Date: 2020-03-10 15:20
- */
+ * @author Zhang Fang
+  */
 public class KeyUtil {
 
     /**

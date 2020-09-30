@@ -31,9 +31,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * api client configuraiton
  *
- * @Author: jushi.zf
- * @Date: 2020-02-19 16:46
- */
+ * @author Zhang Fang
+  */
 @Configuration
 public class ApiClientConfig {
 

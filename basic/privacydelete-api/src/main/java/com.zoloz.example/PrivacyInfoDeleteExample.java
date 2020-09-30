@@ -37,9 +37,8 @@ import org.apache.commons.cli.ParseException;
 /**
  * Example of Privacy Information Delete
  *
- * @Author: jushi
- * @Date: 2020-05-27 19:05
- */
+ * @author Zhang Fang
+  */
 public class PrivacyInfoDeleteExample {
 
     public static void main(String[] args) {

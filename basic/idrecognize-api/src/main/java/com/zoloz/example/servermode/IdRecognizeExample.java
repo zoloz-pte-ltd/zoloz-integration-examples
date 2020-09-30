@@ -38,9 +38,8 @@ import java.util.Base64;
 /**
  * Example of ID Recognize
  *
- * @Author: jushi
- * @Date: 2020-02-05 14:56
- */
+ * @author Zhang Fang
+  */
 public class IdRecognizeExample {
 
     public static void main(String[] args) {
