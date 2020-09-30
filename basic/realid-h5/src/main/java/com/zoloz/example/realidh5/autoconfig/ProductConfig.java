@@ -20,53 +20,32 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.h5mode.autoconfig;
+package com.zoloz.example.realidh5.autoconfig;
 
-import com.zoloz.api.sdk.client.OpenApiClient;
-import com.zoloz.example.util.KeyUtil;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * auto configuraiton
+ * product configuration
  *
  * @Author: jushi
- * @Date: 2020-02-19 16:46
+ * @Date: 2020-05-08 10:32
  */
 @Configuration
-public class ApiClientConfig {
+public class ProductConfig {
 
-    @Value("${host.url:https://sg-production-api.zoloz.com}")
-    private String hostUrl = "https://sg-production-api.zoloz.com";
+    /**
+     * document type, passport by default
+     */
+    @Getter
+    @Value("${product.doctype:00000001003}")
+    private String docType = "00000001003";
 
-    @Value("${client.id}")
-    private String clientId;
-
-    @Value("${merchant.privkey.path}")
-    private String merchantPrivKeyPath;
-
-    @Value("${zoloz.pubkey.path:}")
-    private String zolozPubKeyPath = null;
-
-    @Value("${zoloz.pubkey:}")
-    private String zolozPubKey = null;
-
-
-    @Bean
-    public OpenApiClient client() {
-
-        if (zolozPubKey == null || zolozPubKey.isEmpty()) {
-            zolozPubKey = KeyUtil.loadKeyContent(zolozPubKeyPath);
-        }
-        String merchantPrivateKey = KeyUtil.loadKeyContent(merchantPrivKeyPath);
-
-        OpenApiClient client = new OpenApiClient();
-        client.setHostUrl(hostUrl);
-        client.setClientId(clientId);
-        client.setOpenApiPublicKey(zolozPubKey);
-        client.setMerchantPrivateKey(merchantPrivateKey);
-
-        return client;
-    }
+    /**
+     * serviceLevel
+     */
+    @Getter
+    @Value("${product.serviceLevel:REALID0001}")
+    private String serviceLevel;
 }

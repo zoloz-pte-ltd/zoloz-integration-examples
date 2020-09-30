@@ -20,9 +20,10 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.h5mode;
+package com.zoloz.example.realidh5;
 
-import com.zoloz.example.h5mode.autoconfig.ApiClientConfig;
+import com.zoloz.example.realidh5.autoconfig.ApiClientConfig;
+import com.zoloz.example.realidh5.autoconfig.ProductConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -33,7 +34,7 @@ import org.springframework.context.annotation.Import;
  * @Author: jushi
  * @Date: 2020-02-19 16:21
  */
-@Import(ApiClientConfig.class)
+@Import({ApiClientConfig.class, ProductConfig.class})
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
