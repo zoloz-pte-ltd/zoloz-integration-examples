@@ -14,15 +14,15 @@
         <Console name="CONSOLE" target="system_out">
             <PatternLayout pattern="${DEFAULT_PATTERN}" />
         </Console>
-        <RollingFile name="DEFAULT-APPENDER" fileName="${LOGGING_HOME}/h5mode-bizserver.log"
-                     filePattern="${LOGGING_HOME}/h5mode-bizserver.log.%d{yyyy-MM-dd}">
+        <RollingFile name="DEFAULT-APPENDER" fileName="${LOGGING_HOME}/realih5-bizserver.log"
+                     filePattern="${LOGGING_HOME}/realih5-bizserver.log.%d{yyyy-MM-dd}">
             <PatternLayout pattern="${DEFAULT_PATTERN}" />
             <Policies>
                 <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
             </Policies>
             <DefaultRolloverStrategy>
                 <Delete basePath="${LOGGING_HOME}/" maxDepth="1">
-                    <IfFileName glob="h5mode-bizserver.log.*" />
+                    <IfFileName glob="realih5-bizserver.log.*" />
                     <IfLastModified age="14d" />
                 </Delete>
             </DefaultRolloverStrategy>
