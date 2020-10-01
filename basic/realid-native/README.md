@@ -27,7 +27,7 @@ java \
   -Dclient.id=<client_id> \
   -Dmerchant.privkey.path=<merchant_private_key_path> \
   -Dzoloz.pubkey.path=<zoloz_public_key_path> \
-  -jar target/zoloz-realid-h5-bizserver-1.0-SNAPSHOT.jar
+  -jar target/zoloz-realid-native-bizserver-1.0-SNAPSHOT.jar
 ```
  
  or specify the public key content directly instead of specify the file path of the public key:
@@ -36,7 +36,7 @@ java \
    -Dclient.id=<client_id> \
    -Dmerchant.privkey.path=<merchant_private_key_path> \
    -Dzoloz.pubkey=<zoloz_public_key_base64_content> \
-   -jar target/zoloz-realid-h5-bizserver-1.0-SNAPSHOT.jar
+   -jar target/zoloz-realid-native-bizserver-1.0-SNAPSHOT.jar
  ```
  
  ### 2. Find the endpoint of the server
