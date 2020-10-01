@@ -33,7 +33,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zoloz.example</groupId>
-    <artifactId>zoloz-h5mode-bizserver</artifactId>
+    <artifactId>zoloz-realid-h5-bizserver</artifactId>
 
     <dependencies>
         <dependency>
