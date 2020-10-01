@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.servermode;
+package com.zoloz.example.idrecognizeapi;
 
 import com.zoloz.api.sdk.api.DocRecognitionAPI;
 import com.zoloz.api.sdk.client.OpenApiClient;
