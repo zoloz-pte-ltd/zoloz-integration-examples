@@ -31,9 +31,8 @@ import org.springframework.context.annotation.Import;
 /**
  * application entry
  *
- * @Author: jushi
- * @Date: 2020-02-19 16:21
- */
+ * @author Zhang Fang
+  */
 @Import({ServerInfoListener.class, ApiClientConfig.class, ProductConfig.class})
 @SpringBootApplication
 public class Application {

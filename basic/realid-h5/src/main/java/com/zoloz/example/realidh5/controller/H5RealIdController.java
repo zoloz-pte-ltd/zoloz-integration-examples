@@ -2,9 +2,8 @@
  * Alipay.com Inc.
  * Copyright (c) 2004-2020 All Rights Reserved.
  */
-package com.zoloz.example.h5mode.controller;
+package com.zoloz.example.realidh5.controller;
 
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import com.zoloz.api.sdk.client.OpenApiClient;
-import com.zoloz.example.h5mode.autoconfig.ProductConfig;
+import com.zoloz.example.realidh5.autoconfig.ProductConfig;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +25,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * Controller providing APIs for front-end
+ *
  * @author chenzc
- * @version $Id: H5ClientModeController.java, v 0.1 2020年09月27日 15:32 chenzc Exp $
  */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
-public class H5ClientModeController {
+public class H5RealIdController {
 
-    private static final Logger logger = LoggerFactory.getLogger(H5ClientModeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(H5RealIdController.class);
 
     @Autowired
     private OpenApiClient openApiClient;
@@ -43,7 +43,7 @@ public class H5ClientModeController {
     private ProductConfig realIdConfig;
 
     @RequestMapping(value = "/initialize", method = RequestMethod.POST)
-    public JSONObject h5RealIdInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
+    public JSONObject realIdInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
         logger.info("request=" + request);
 
@@ -63,21 +63,16 @@ public class H5ClientModeController {
             apiReq.put("docType", request.getString("docType"));
         }
 
-        StringBuilder sb=new StringBuilder(1024);
-        sb.append(servletRequest.getScheme());
-        sb.append("://");
-        String serverName=servletRequest.getServerName();
-        if(StringUtils.equals(serverName,"localhost")){
-            serverName=InetAddress.getLocalHost().getHostAddress();
-        }
-        sb.append(serverName);
-        sb.append(":");
-        sb.append(servletRequest.getServerPort());
-        sb.append("/result.html");
+        String resultUrl = String.format(
+                "%s://%s:%d/result.html",
+                servletRequest.getScheme(),
+                servletRequest.getServerName(),
+                servletRequest.getServerPort()
+        );
 
         Map<String, String> h5ModeConfig = new HashMap<>();
-        h5ModeConfig.put("completeCallbackUrl", sb.toString());
-        h5ModeConfig.put("interruptCallbackUrl",sb.toString());
+        h5ModeConfig.put("completeCallbackUrl", resultUrl);
+        h5ModeConfig.put("interruptCallbackUrl",resultUrl);
 
         Map<String, String> pageConfig = new HashMap<>();
         if (request.getJSONObject("pageConfig") != null && request.getJSONObject("pageConfig").getString("urlFaceGuide") != null) {

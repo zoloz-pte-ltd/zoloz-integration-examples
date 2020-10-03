@@ -39,9 +39,8 @@ import java.util.Base64;
 /**
  * Example of Face Compare
  *
- * @Author: jushi
- * @Date: 2020-02-05 14:56
- */
+ * @author Zhang Fang
+  */
 public class FaceCompareExample {
 
     public static void main(String[] args) {

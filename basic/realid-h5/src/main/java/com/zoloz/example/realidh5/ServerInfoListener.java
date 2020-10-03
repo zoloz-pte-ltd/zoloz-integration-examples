@@ -20,36 +20,56 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.h5mode.autoconfig;
+package com.zoloz.example.realidh5;
 
-import lombok.SneakyThrows;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Configuration;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
- * server information auto configuraiton
+ * server information listener
  *
- * @Author: jushi
- * @Date: 2020-02-19 16:46
- */
-@Configuration
-public class ServerInfoConfig implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
+ * @author Zhang Fang
+  */
+public class ServerInfoListener implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
 
-    private Logger logger = LoggerFactory.getLogger(ServerInfoConfig.class);
+    private Logger logger = LoggerFactory.getLogger(ServerInfoListener.class);
 
     @Override
-    @SneakyThrows(UnknownHostException.class)
     public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
-        String ip = InetAddress.getLocalHost().getHostAddress();
-        int port = event.getEmbeddedServletContainer().getPort();
-        if (logger.isInfoEnabled()) {
-            logger.info(String.format("Server started on %s:%d", ip, port));
+        try {
+            int port = event.getEmbeddedServletContainer().getPort();
+
+            Enumeration<NetworkInterface> ifcs = NetworkInterface.getNetworkInterfaces();
+            while (ifcs.hasMoreElements()) {
+
+                NetworkInterface ifc = ifcs.nextElement();
+
+                Enumeration<InetAddress> addresses = ifc.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+
+                    InetAddress address = addresses.nextElement();
+                    if (address instanceof Inet4Address) {
+
+                        String ip = address.getHostAddress();
+                        if (logger.isInfoEnabled()) {
+                            logger.info(String.format("Server started on %s:%d", ip, port));
+                        }
+                    }
+                }
+            }
+        }
+        catch (SocketException ex) {
+            if (logger.isErrorEnabled()) {
+                logger.error("No available network is found");
+            }
         }
     }
 }

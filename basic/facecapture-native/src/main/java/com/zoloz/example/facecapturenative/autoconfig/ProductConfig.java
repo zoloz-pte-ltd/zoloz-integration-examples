@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * product configuration
  *
- * @author: jushi.zf
+ * @author Zhang Fang
  */
 @Configuration
 public class ProductConfig {

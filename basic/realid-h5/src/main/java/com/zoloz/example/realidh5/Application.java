@@ -20,32 +20,23 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.h5mode.autoconfig;
+package com.zoloz.example.realidh5;
 
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import com.zoloz.example.realidh5.autoconfig.ApiClientConfig;
+import com.zoloz.example.realidh5.autoconfig.ProductConfig;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 
 /**
- * product configuration
+ * application entry
  *
- * @Author: jushi
- * @Date: 2020-05-08 10:32
- */
-@Configuration
-public class ProductConfig {
-
-    /**
-     * document type, passport by default
-     */
-    @Getter
-    @Value("${product.doctype:00000001003}")
-    private String docType = "00000001003";
-
-    /**
-     * serviceLevel
-     */
-    @Getter
-    @Value("${product.serviceLevel:REALID0001}")
-    private String serviceLevel;
+ * @author Zhang Fang
+  */
+@Import({ApiClientConfig.class, ProductConfig.class})
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class,args);
+    }
 }

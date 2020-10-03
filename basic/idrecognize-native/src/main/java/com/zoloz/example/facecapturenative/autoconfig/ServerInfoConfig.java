@@ -35,9 +35,8 @@ import java.net.UnknownHostException;
 /**
  * server information auto configuraiton
  *
- * @Author: jushi
- * @Date: 2020-02-19 16:46
- */
+ * @author Zhang Fang
+  */
 @Configuration
 public class ServerInfoConfig implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
 

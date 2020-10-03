@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.facecapturenative.autoconfig;
+package com.zoloz.example.realidh5.autoconfig;
 
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.util.KeyUtil;
@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * api client configuraiton
+ * auto configuraiton
  *
  * @author Zhang Fang
   */
@@ -50,6 +50,7 @@ public class ApiClientConfig {
 
     @Value("${zoloz.pubkey:}")
     private String zolozPubKey = null;
+
 
     @Bean
     public OpenApiClient client() {
