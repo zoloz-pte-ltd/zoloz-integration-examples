@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.servermode;
+package com.zoloz.example.facecompareapi;
 
 import com.zoloz.api.sdk.api.FaceCompareAPI;
 import com.zoloz.api.sdk.client.OpenApiClient;

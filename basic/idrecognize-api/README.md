@@ -3,7 +3,7 @@
 This is an example of recognizing document image with ZOLOZ IdRecognize API
 
 ## Build
-### Prequisites
+**Prequisites**
 - JDK 1.8
 - Maven >3.2.5
 
@@ -13,13 +13,13 @@ mvn package
 ```
 
 ## Usage
-### Prequisite
+**Prequisite**
 - JRE 1.8
 
 Execute following command:
 
 ```sh
-java -jar src/examples/idrecognize/target/zoloz-idrecognize-example-1.0-SNAPSHOT.jar \
+java -jar target/zoloz-idrecognize-api-example-1.0-SNAPSHOT.jar \
   -c <client_id> \
   -p <zoloz_public_key_content> \
   -k <merchant_private_key_path> \
