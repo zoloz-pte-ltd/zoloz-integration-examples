@@ -25,9 +25,6 @@ body {
   margin: 0;
   color: #282828;
   font-size:16px;
-}
-
-#app {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -82,32 +79,21 @@ body {
 
 .faceGuideImage {
   border-radius: 50%;
-  width: calc(1px + 100%); //一个奇怪的bug，如果100%会导致border-radius不生效
+  width: calc(1px + 100%);
   display: block;
 }
 
-.zBottomButton{
+.zBottomButton {
   border: 2px solid #0064FF;
   background-color: #0064FF;
   color: white;
-  height: 0.4rem;
-  line-height: 0.4rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
   text-align: center;
-  font-size: 0.16rem;
   font-weight: bold;
-
-  &.disableClick{
-    background-color: #BFBFBF;
-    border-color: #BFBFBF;
-  }
-
-  &.second{
-    background-color: white;
-    color: #0064FF;
-  }
 }
 
-.zNavigationBar{
+.zNavigationBar {
   position: absolute;
   z-index: 10;
   width: 100%;

@@ -21,7 +21,7 @@
  */
 
 window.onload = () => {
-  var elements = document.getElementsByClassName('routerView')!;
+  var elements = document.getElementsByClassName('routerView');
   for (const element of elements) {
     element.style.minHeight = window.innerHeight + 'px';
   }
