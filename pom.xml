@@ -38,7 +38,7 @@
 
         <module>basic/idrecognize-api</module>
         <module>basic/idrecognize-native</module>
-        <!--<module>basic/idrecognize-h5</module>-->
+        <module>basic/idrecognize-h5</module>
 
         <module>basic/realid-native</module>
         <module>basic/realid-h5</module>
