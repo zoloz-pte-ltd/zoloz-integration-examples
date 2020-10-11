@@ -11,9 +11,11 @@
     optional_label: '',
     error_msg: 'Field can\'t be blank',
     options: [
+      {key: '00000001003', value: 'Passport'},
+      {key: '08520000001', value: 'HKID1'},
+      {key: '08520000002', value: 'HKID2'},
       {key: '00630000001', value: 'UMID'},
       {key: '00630000002', value: 'TIN ID'},
-      {key: '00000001003', value: 'Passport'},
       {key: '00630000024', value: 'Philhealth Card'},
       {key: '00630000004', value: 'Driver\'s License'},
       {key: '00630000020', value: 'SSS ID'},
