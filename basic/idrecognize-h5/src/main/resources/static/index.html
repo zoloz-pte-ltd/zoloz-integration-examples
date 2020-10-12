@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2020 ZOLOZ PTE.LTD.
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>web-ekyc</title>
+  <link rel="stylesheet" type="text/css" href="./css/home.css">
+</head>
+<body>
+  <div class="routerView">
+    <div class="zNavigationBar">Choose ID Type</div>
+    <div class="mainContainer">
+      <div class="cellContainer">
+        <div class="zListLabel" id="zListLabel">ID type</div>
+        <select class="zListContent zSelector" name="select" id="zListContent" onchange="onchange" onfocus="onFocus()">
+          <option></option>
+          <option disabled value="-1">Please select</option>
+        </select>
+        <div class="zHelperMsg" id="zHelperMsg"></div>
+      </div>
+      <div class="tipHeader">Prepare to take your ID photo</div>
+      <div class="tipText">&nbsp;&nbsp;· Make sure the ID is right side up<br/>&nbsp;&nbsp;· Make sure ID is clear and readable<br/>&nbsp;&nbsp;· Avoid flash or glare</div>
+      <img class="docGuideImage" src="./image/docguide.png" alt="">
+    </div>
+    <div class="footer">
+      <div class="zBottomButton" onclick="takePhoto()">Take ID Photo</div>
+    </div>
+  </div>
+</body>
+
+<script src="./js/utils.js"></script>
+<script src="./pagejs/home.js"></script>
+</html>

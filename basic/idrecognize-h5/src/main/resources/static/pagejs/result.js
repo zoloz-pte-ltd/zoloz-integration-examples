@@ -21,18 +21,14 @@
  */
 
 var elements = document.getElementsByClassName('routerView');
-var docImageEl = document.getElementById('docImage');
-var faceImageEl = document.getElementById('faceImage');
-var ekycResultEl = document.getElementById('ekycResult');
-var scoreEl = document.getElementById('score');
-var riskEl = document.getElementById('risk');
-var interruptEl = document.getElementById('interrupt');
-var resultMainEl = document.getElementById('resultMain');
-var docImage = '';
-var faceImage = '';
-var ekycResult = '';
-var score = '';
-var risk = '';
+var imageSrcEl = document.getElementById('imageSrc');
+var resultEl = document.getElementById('result');
+var idNumberEl = document.getElementById('idNumber');
+var recognationResultEl = document.getElementById('recognationResult');
+var imageSrc = '';
+var result = '';
+var idNumber = '';
+var recognationResult = '';
 window.onload = () => {
   this.created();
   for (const element of elements) {
@@ -40,9 +36,8 @@ window.onload = () => {
   }
 }
 
-
-checkResult = async (data) => {
-  const url = baseUrl + '/api/checkresult';
+checkDocPro = async (data) => {
+  const url = '/api/idrecognition/checkresult';
   const options = {
     method: 'POST',
     mode: 'cors',
@@ -56,38 +51,32 @@ checkResult = async (data) => {
 
 created = async () => {
   const response = JSON.parse(decodeURIComponent(getUrlParam('response')));
-  const state = response.state;
-  if (response.code === 1003) {
-    interruptEl.style.display = 'block';
-    resultMainEl.style.display = 'none';
-    return;
-  }
-  const checkData = {
-    transactionId: state,
-    isReturnImage: 'Y'
-  }
-  const result = await checkResult(checkData);
-  if (result.retCode === 404) {
-    alert('Network Error');
-  } else {
-    if (result.extIdInfo && result.extIdInfo.frontPageImg) {
-      docImage = `data:image/png;base64,${result.extIdInfo.frontPageImg}`;
-    }
-    if (result.extFaceInfo && result.extFaceInfo.faceImg) {
-      faceImage = `data:image/png;base64,${result.extFaceInfo.faceImg}`;
-    }
-    ekycResult = result.ekycResult || '-';
-    score = (result.extFaceInfo && result.extFaceInfo.faceScore.toFixed(2)) || '-';
-    if (result.extRiskInfo && result.extRiskInfo.ekycResultRisk) {
-      risk = result.extRiskInfo.ekycResultRisk;
+  const state = getUrlParam('state');
+  if (response.code === 1000 || response.code === 2006) {
+    const checkData = {
+      transactionId: state,
+    };
+    const results = await checkDocPro(checkData);
+    if (results.retCode === 404) {
+      alert('Network Error');
     } else {
-      risk = '-';
+      if (results.zDocExtInfo && results.zDocExtInfo.imageContent && results.zDocExtInfo.imageContent.length) {
+        imageSrc = `data:image/png;base64,${results.zDocExtInfo.imageContent[0]}`;
+      }
+      result = results.result.resultCode;
+      if (results.zDocExtInfo && results.zDocExtInfo.ocrResult && results.zDocExtInfo.ocrResult.ID_NUMBER) {
+        idNumber = results.zDocExtInfo.ocrResult.ID_NUMBER;
+      }
+      if (results.zDocExtInfo && results.zDocExtInfo.recognitionResult) {
+        recognationResult = results.zDocExtInfo.recognitionResult;
+      }
+      resultEl.innerHTML = this.result;
+      idNumberEl.innerHTML = this.idNumber;
+      recognationResultEl.innerHTML = this.recognationResult;
+      imageSrcEl.setAttribute('src', this.imageSrc);
     }
-    ekycResultEl.innerHTML = this.ekycResult;
-    scoreEl.innerHTML = this.score;
-    riskEl.innerHTML = this.risk;
-    docImageEl.setAttribute('src', this.docImage)
-    faceImageEl.setAttribute('src', this.faceImage)
+  } else {
+    window.history.back();
   }
 }
 
