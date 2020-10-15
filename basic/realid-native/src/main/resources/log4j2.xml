@@ -52,10 +52,10 @@
 
     <loggers>
         <root level="${LOGGING_LEVEL}">
-            <appenderref ref="CONSOLE" />
+            <appender-ref ref="CONSOLE" />
             <appender-ref ref="DEFAULT-APPENDER"/>
         </root>
-        <logger name="com.zoloz.example"  level="${LOGGING_LEVEL}" additivity="false">
+        <logger name="com.zoloz.example" level="${LOGGING_LEVEL}" >
             <appender-ref ref="DEFAULT-APPENDER"/>
         </logger>
     </loggers>

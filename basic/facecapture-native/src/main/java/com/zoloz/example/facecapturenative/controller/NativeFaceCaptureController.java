@@ -22,14 +22,11 @@
 
 package com.zoloz.example.facecapturenative.controller;
 
-import javax.annotation.PostConstruct;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.facecapturenative.autoconfig.ProductConfig;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,23 +44,18 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping(value = {"/api"})
-public class NativeRealIdController {
+public class NativeFaceCaptureController {
 
-    private static final Logger logger = LoggerFactory.getLogger(NativeRealIdController.class);
+    private static final Logger logger = LoggerFactory.getLogger(NativeFaceCaptureController.class);
 
     @Autowired
     private OpenApiClient openApiClient;
 
     @Autowired
-    private ProductConfig realIdConfig;
+    private ProductConfig productConfig;
 
-    @PostConstruct
-    public void init(){
-        logger.info("docType={},serviceLevel={}",realIdConfig.getDocType(),realIdConfig.getServiceLevel());
-    }
-
-    @RequestMapping(value = {"/realid/initialize","/realIdDemoService/initialize"}, method = RequestMethod.POST)
-    public JSONObject realIdInit(@RequestBody JSONObject request) {
+    @RequestMapping(value = {"/facecapture/initialize"}, method = RequestMethod.POST)
+    public JSONObject faceCaptureInit(@RequestBody JSONObject request) {
 
         logger.info("request=" + request);
 
@@ -73,17 +65,11 @@ public class NativeRealIdController {
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
-        apiReq.put("flowType", "REALIDLITE_KYC");
-        apiReq.put("docType", realIdConfig.getDocType());
-        apiReq.put("pages", "1");
         apiReq.put("metaInfo", metaInfo);
-        apiReq.put("userId", userId);
-        if(StringUtils.isNotBlank(realIdConfig.getServiceLevel())){
-            apiReq.put("serviceLevel",realIdConfig.getServiceLevel());
-        }
+        apiReq.put("merchantUserId", userId);
 
         String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.realid.initialize",
+                "v1.zoloz.facecapture.initialize",
                 JSON.toJSONString(apiReq)
         );
 
@@ -98,8 +84,8 @@ public class NativeRealIdController {
         return response;
     }
 
-    @RequestMapping(value = "/realid/checkresult", method = RequestMethod.POST)
-    public JSONObject realIdCheck(@RequestBody JSONObject request) {
+    @RequestMapping(value = "/facecapture/checkresult", method = RequestMethod.POST)
+    public JSONObject faceCaptureCheck(@RequestBody JSONObject request) {
 
         logger.info("request=" + request);
 

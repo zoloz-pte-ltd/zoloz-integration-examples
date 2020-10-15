@@ -22,8 +22,6 @@
 
 package com.zoloz.example.realidnative.controller;
 
-import javax.annotation.PostConstruct;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -56,11 +54,6 @@ public class NativeRealIdController {
 
     @Autowired
     private ProductConfig realIdConfig;
-
-    @PostConstruct
-    public void init(){
-        logger.info("docType={},serviceLevel={}",realIdConfig.getDocType(),realIdConfig.getServiceLevel());
-    }
 
     @RequestMapping(value = {"/realid/initialize","/realIdDemoService/initialize"}, method = RequestMethod.POST)
     public JSONObject realIdInit(@RequestBody JSONObject request) {

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.facecapturenative.autoconfig;
+package com.zoloz.example.idrecognizenative.autoconfig;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,11 +40,4 @@ public class ProductConfig {
     @Getter
     @Value("${product.doctype:00000001003}")
     private String docType = "00000001003";
-
-    /**
-     * service level
-     */
-    @Getter
-    @Value("${product.serviceLevel}")
-    private String serviceLevel;
 }

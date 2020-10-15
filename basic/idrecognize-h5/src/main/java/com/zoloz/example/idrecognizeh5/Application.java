@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Import;
  *
  * @author Zhang Fang
   */
-@Import({ApiClientConfig.class, ProductConfig.class})
+@Import({ServerInfoListener.class, ApiClientConfig.class, ProductConfig.class})
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
