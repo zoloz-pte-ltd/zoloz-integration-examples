@@ -75,6 +75,7 @@
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
+
         <!-- Base64 -->
         <dependency>
             <groupId>commons-codec</groupId>

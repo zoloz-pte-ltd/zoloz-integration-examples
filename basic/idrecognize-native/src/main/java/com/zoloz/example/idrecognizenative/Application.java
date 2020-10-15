@@ -20,10 +20,10 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.facecapturenative;
+package com.zoloz.example.idrecognizenative;
 
-import com.zoloz.example.facecapturenative.autoconfig.ApiClientConfig;
-import com.zoloz.example.facecapturenative.autoconfig.ProductConfig;
+import com.zoloz.example.idrecognizenative.autoconfig.ApiClientConfig;
+import com.zoloz.example.idrecognizenative.autoconfig.ProductConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
