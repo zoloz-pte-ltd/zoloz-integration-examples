@@ -142,7 +142,6 @@ public class RealIdController {
         JSONObject response = new JSONObject();
         if("S".equals(apiResp.getJSONObject("result").getString("resultStatus"))) {
             String docImage = apiResp.getJSONObject("extInfo").getString("imageContent");
-            JSONObject rect = apiResp.getJSONObject("extInfo").getJSONObject("rect");
 
             // update context
             context.setDocImg(docImage);
