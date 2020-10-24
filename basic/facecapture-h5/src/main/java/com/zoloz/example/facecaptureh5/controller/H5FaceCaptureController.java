@@ -58,8 +58,9 @@ public class H5FaceCaptureController {
     @RequestMapping(value = "/facecapture/initialize", method = RequestMethod.POST)
     public JSONObject faceCaptureInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
-        logger.info("request=" + request);
-
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String metaInfo = "MOB_H5";
 
@@ -94,7 +95,9 @@ public class H5FaceCaptureController {
         JSONObject response = new JSONObject(apiResp);
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
-        logger.info("response=" + apiRespStr);
+        if (logger.isInfoEnabled()) {
+            logger.info("response=" + apiRespStr);
+        }
 
         return response;
     }
@@ -102,7 +105,9 @@ public class H5FaceCaptureController {
     @RequestMapping(value = "/facecapture/checkresult", method = RequestMethod.POST)
     public JSONObject faceCaptureCheck(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");

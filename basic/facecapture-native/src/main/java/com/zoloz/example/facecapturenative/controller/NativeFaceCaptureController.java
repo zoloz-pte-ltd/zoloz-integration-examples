@@ -57,7 +57,9 @@ public class NativeFaceCaptureController {
     @RequestMapping(value = {"/facecapture/initialize"}, method = RequestMethod.POST)
     public JSONObject faceCaptureInit(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String metaInfo = request.getString("metaInfo");
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
@@ -79,7 +81,9 @@ public class NativeFaceCaptureController {
         response.put("rsaPubKey", openApiClient.getOpenApiPublicKey());
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
-        logger.info("response=" + apiRespStr);
+        if (logger.isInfoEnabled()) {
+            logger.info("response=" + apiRespStr);
+        }
 
         return response;
     }
@@ -87,7 +91,9 @@ public class NativeFaceCaptureController {
     @RequestMapping(value = "/facecapture/checkresult", method = RequestMethod.POST)
     public JSONObject faceCaptureCheck(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");
@@ -113,7 +119,9 @@ public class NativeFaceCaptureController {
     @RequestMapping(value = "/privacyinfo/delete", method = RequestMethod.POST)
     public JSONObject privacyInfoDelete(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");

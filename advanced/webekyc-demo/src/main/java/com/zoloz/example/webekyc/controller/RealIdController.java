@@ -74,7 +74,9 @@ public class RealIdController {
     @RequestMapping(value = "/initdoc", method = RequestMethod.POST)
     public JSONObject initDoc(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String docType = request.getString("docType");
         String bizId = String.valueOf(System.currentTimeMillis());
@@ -112,14 +114,18 @@ public class RealIdController {
             response.put("success", false);
         }
 
-        logger.info("init doc response=" + response);
+        if (logger.isInfoEnabled()) {
+            logger.info("init doc response=" + response);
+        }
         return response;
     }
 
     @RequestMapping(value = "/checkdoc", method = RequestMethod.POST)
     public JSONObject checkDoc(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String bizId = request.getString("bizId");
         RealIdContext context = contextMap.get(bizId);
@@ -136,7 +142,6 @@ public class RealIdController {
         JSONObject response = new JSONObject();
         if("S".equals(apiResp.getJSONObject("result").getString("resultStatus"))) {
             String docImage = apiResp.getJSONObject("extInfo").getString("imageContent");
-            JSONObject rect = apiResp.getJSONObject("extInfo").getJSONObject("rect");
 
             // update context
             context.setDocImg(docImage);
@@ -146,14 +151,18 @@ public class RealIdController {
             response.put("success", false);
         }
 
-        logger.info("check response: " + apiResp.getJSONObject("result"));
+        if (logger.isInfoEnabled()) {
+            logger.info("check response: " + apiResp.getJSONObject("result"));
+        }
         return response;
     }
 
     @RequestMapping(value = "/initface", method = RequestMethod.POST)
     public JSONObject initFace(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String bizId = request.getString("bizId");
         RealIdContext context = contextMap.get(bizId);
@@ -183,14 +192,18 @@ public class RealIdController {
             response.put("success", false);
         }
 
-        logger.info("init face response=" + response);
+        if (logger.isInfoEnabled()) {
+            logger.info("init face response=" + response);
+        }
         return response;
     }
 
     @RequestMapping(value = "/checkfinal", method = RequestMethod.POST)
     public JSONObject checkFinal(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String bizId = request.getString("bizId");
         RealIdContext context = contextMap.get(bizId);

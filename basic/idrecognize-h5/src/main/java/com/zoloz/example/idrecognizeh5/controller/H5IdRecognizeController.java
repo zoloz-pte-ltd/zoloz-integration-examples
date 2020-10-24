@@ -59,7 +59,9 @@ public class H5IdRecognizeController {
     @RequestMapping(value = "/idrecognition/initialize", method = RequestMethod.POST)
     public JSONObject idRecognizeInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String metaInfo = "MOB_H5";
 
@@ -89,7 +91,9 @@ public class H5IdRecognizeController {
         JSONObject response = new JSONObject(apiResp);
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
-        logger.info("response=" + apiRespStr);
+        if (logger.isInfoEnabled()) {
+            logger.info("response=" + apiRespStr);
+        }
 
         return response;
     }
@@ -97,7 +101,9 @@ public class H5IdRecognizeController {
     @RequestMapping(value = "/idrecognition/checkresult", method = RequestMethod.POST)
     public JSONObject idRecognizeCheck(@RequestBody JSONObject request) {
 
-        logger.info("request=" + request);
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");
