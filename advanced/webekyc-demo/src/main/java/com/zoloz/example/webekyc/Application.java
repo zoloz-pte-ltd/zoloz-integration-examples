@@ -22,6 +22,8 @@
 
 package com.zoloz.example.webekyc;
 
+import com.alibaba.fastjson.parser.ParserConfig;
+
 import com.zoloz.example.webekyc.autoconfig.ApiClientConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,6 +38,9 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
+
+        ParserConfig.getGlobalInstance().setSafeMode(true);
+
         SpringApplication.run(Application.class,args);
     }
 }

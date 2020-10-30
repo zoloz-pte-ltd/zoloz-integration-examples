@@ -36,6 +36,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
+import com.alibaba.fastjson.parser.ParserConfig;
+
 /**
  * Example of Face Compare
  *
@@ -44,6 +46,8 @@ import java.util.Base64;
 public class FaceCompareExample {
 
     public static void main(String[] args) {
+
+        ParserConfig.getGlobalInstance().setSafeMode(true);
 
         // create Options object
         Options options = new Options();

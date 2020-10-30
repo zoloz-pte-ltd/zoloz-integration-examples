@@ -22,6 +22,8 @@
 
 package com.zoloz.example;
 
+import com.alibaba.fastjson.parser.ParserConfig;
+
 import com.zoloz.api.sdk.api.PrivacyInfoDeleteApi;
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.api.sdk.model.PrivacyInfoDeleteRequest;
@@ -43,6 +45,7 @@ public class PrivacyInfoDeleteExample {
 
     public static void main(String[] args) {
 
+        ParserConfig.getGlobalInstance().setSafeMode(true);
 
         // create Options object
         Options options = new Options();
