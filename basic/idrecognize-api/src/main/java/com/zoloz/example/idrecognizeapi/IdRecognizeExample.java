@@ -35,6 +35,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
+import com.alibaba.fastjson.parser.ParserConfig;
+
 /**
  * Example of ID Recognize
  *
@@ -43,6 +45,8 @@ import java.util.Base64;
 public class IdRecognizeExample {
 
     public static void main(String[] args) {
+
+        ParserConfig.getGlobalInstance().setSafeMode(true);
 
         // create Options object
         Options options = new Options();

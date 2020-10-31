@@ -22,6 +22,8 @@
 
 package com.zoloz.example.facecaptureh5;
 
+import com.alibaba.fastjson.parser.ParserConfig;
+
 import com.zoloz.example.facecaptureh5.autoconfig.ApiClientConfig;
 import com.zoloz.example.facecaptureh5.autoconfig.ProductConfig;
 import org.springframework.boot.SpringApplication;
@@ -37,6 +39,9 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
+
+        ParserConfig.getGlobalInstance().setSafeMode(true);
+
         SpringApplication.run(Application.class,args);
     }
 }

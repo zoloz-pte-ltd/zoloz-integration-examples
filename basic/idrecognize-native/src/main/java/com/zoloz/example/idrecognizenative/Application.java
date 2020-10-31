@@ -22,6 +22,8 @@
 
 package com.zoloz.example.idrecognizenative;
 
+import com.alibaba.fastjson.parser.ParserConfig;
+
 import com.zoloz.example.idrecognizenative.autoconfig.ApiClientConfig;
 import com.zoloz.example.idrecognizenative.autoconfig.ProductConfig;
 import org.springframework.boot.SpringApplication;
@@ -38,6 +40,9 @@ import org.springframework.context.annotation.Import;
 public class Application {
 
     public static void main(String[] args) {
+
+        ParserConfig.getGlobalInstance().setSafeMode(true);
+
         SpringApplication.run(Application.class,args);
     }
 }
