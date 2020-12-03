@@ -22,27 +22,36 @@
 
 package com.zoloz.example.idrecognizeapi;
 
-import com.zoloz.api.sdk.api.DocRecognitionAPI;
-import com.zoloz.api.sdk.client.OpenApiClient;
-import com.zoloz.api.sdk.model.DocRecognitionRequest;
-import com.zoloz.api.sdk.model.DocRecognitionResponse;
-import com.zoloz.example.util.KeyUtil;
-import lombok.SneakyThrows;
-import org.apache.commons.cli.*;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 
+import com.zoloz.api.sdk.api.DocRecognitionAPI;
+import com.zoloz.api.sdk.client.OpenApiClient;
+import com.zoloz.api.sdk.model.DocRecognitionRequest;
+import com.zoloz.api.sdk.model.DocRecognitionResponse;
+import com.zoloz.example.util.KeyUtil;
+import lombok.SneakyThrows;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Example of ID Recognize
  *
  * @author Zhang Fang
-  */
+ */
 public class IdRecognizeExample {
+
+    private static final Logger logger = LoggerFactory.getLogger(IdRecognizeExample.class);
 
     public static void main(String[] args) {
 
@@ -104,41 +113,35 @@ public class IdRecognizeExample {
 
         // call api
         DocRecognitionResponse response = docRecognitionAPI.recognition(request);
+        // log result
         if ("S".equals(response.getResult().getResultStatus())) {
             if ("Y".equals(response.getRecognitionResult())) {
-                System.out.println("ID detected.\n");
+                if (logger.isInfoEnabled()) {
+                    logger.info("ID detected.");
+                    if (response.getSpoofResult() != null && !response.getSpoofResult().isEmpty()) {
+                        StringBuilder sb = new StringBuilder();
+                        response.getOcrResult().forEach((key, value) -> {
+                            sb.append(String.format("%s: %s; ", key, value));
+                        });
+                        logger.info("Spoofing Detection:" + sb.toString());
+                    }
 
-                if (response.getSpoofResult() != null && !response.getSpoofResult().isEmpty()) {
-                    System.out.println("Spoofing Detection:");
+                    StringBuilder sb = new StringBuilder();
                     response.getOcrResult().forEach((key, value) -> {
-                        System.out.println(String.format(" -%s: %s", key, value));
+                        sb.append(String.format("%s: %s; ", key, value));
                     });
-
+                    logger.info("OCR Result:" + sb.toString());
+                    logger.info(String.format("result code:%s, result message:%s", response.getResult().getResultCode(),
+                            response.getResult().getResultMessage()));
                 }
-
-                System.out.println("OCR Result:");
-                response.getOcrResult().forEach((key, value) -> {
-                    System.out.println(String.format(" -%s: %s", key, value));
-                });
-                System.out.println(String.format(
-                        "[Error] %s: %s",
-                        response.getResult().getResultCode(),
-                        response.getResult().getResultMessage()
-                ));
             }
             else {
-                System.out.println(String.format(
-                        "Cannot recognize image: %s",
-                        response.getRecognitionErrorCode()
-                ));
+                logger.error(String.format("Cannot recognize image: %s", response.getRecognitionErrorCode()));
             }
         }
         else {
-            System.out.println(String.format(
-                    "[Error] %s: %s",
-                    response.getResult().getResultCode(),
-                    response.getResult().getResultMessage()
-            ));
+            logger.error(String.format("result code:%s, result message:%s", response.getResult().getResultCode(),
+                    response.getResult().getResultMessage()));
         }
     }
 

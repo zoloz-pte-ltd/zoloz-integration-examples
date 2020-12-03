@@ -22,28 +22,36 @@
 
 package com.zoloz.example.facecompareapi;
 
-import com.zoloz.api.sdk.api.FaceCompareAPI;
-import com.zoloz.api.sdk.client.OpenApiClient;
-import com.zoloz.api.sdk.model.FaceCompareRequest;
-import com.zoloz.api.sdk.model.FaceCompareResponse;
-
-import com.zoloz.example.util.KeyUtil;
-import lombok.SneakyThrows;
-import org.apache.commons.cli.*;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 
+import com.zoloz.api.sdk.api.FaceCompareAPI;
+import com.zoloz.api.sdk.client.OpenApiClient;
+import com.zoloz.api.sdk.model.FaceCompareRequest;
+import com.zoloz.api.sdk.model.FaceCompareResponse;
+import com.zoloz.example.util.KeyUtil;
+import lombok.SneakyThrows;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Example of Face Compare
  *
  * @author Zhang Fang
-  */
+ */
 public class FaceCompareExample {
+
+    private static final Logger logger = LoggerFactory.getLogger(FaceCompareExample.class);
 
     public static void main(String[] args) {
 
@@ -109,19 +117,15 @@ public class FaceCompareExample {
         // call api
         FaceCompareResponse response = faceCompareApi.compare(request);
 
-        if ("S".equals(response.getResult().getResultStatus())) {
-            System.out.println(String.format(
-                    "Two faces are from %s, the similarity score is %2f",
-                    response.getSamePerson() ? "same person" : "different persons",
-                    response.getScore()
-            ));
-        }
-        else {
-            System.out.println(String.format(
-                    "[Error] %s: %s",
-                    response.getResult().getResultCode(),
-                    response.getResult().getResultMessage()
-            ));
+        // log result
+        if (logger.isInfoEnabled()) {
+            if ("S".equals(response.getResult().getResultStatus())) {
+                logger.info(String.format("Two faces are from %s, the similarity score is %2f",
+                        response.getSamePerson() ? "same person" : "different persons", response.getScore()));
+            } else {
+                logger.error(String.format("result code:%s, result message:%s", response.getResult().getResultCode(),
+                        response.getResult().getResultMessage()));
+            }
         }
     }
 

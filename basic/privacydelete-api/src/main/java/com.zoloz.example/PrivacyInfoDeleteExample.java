@@ -35,13 +35,17 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Example of Privacy Information Delete
  *
  * @author Zhang Fang
-  */
+ */
 public class PrivacyInfoDeleteExample {
+
+    private static final Logger logger = LoggerFactory.getLogger(PrivacyInfoDeleteExample.class);
 
     public static void main(String[] args) {
 
@@ -53,7 +57,7 @@ public class PrivacyInfoDeleteExample {
         options.addOption("p", true, "The base64 content of the zoloz public key");
         options.addOption("k", true, "The path of the merchant private key");
         options.addOption("t", true, "The transaction id");
-        options.addOption(new Option("e", true, "The endpoint of the zoloz service"){{
+        options.addOption(new Option("e", true, "The endpoint of the zoloz service") {{
             setRequired(false);
         }});
 
@@ -102,15 +106,14 @@ public class PrivacyInfoDeleteExample {
         // call api
         PrivacyInfoDeleteResponse response = deleteApi.delete(request);
 
+        // log result
         if ("S".equals(response.getResult().getResultStatus())) {
-            System.out.println(String.format("delete transactionId=%s success",request.getTransactionId()));
-        }
-        else {
-            System.out.println(String.format(
-                    "[Error] %s: %s",
-                    response.getResult().getResultCode(),
-                    response.getResult().getResultMessage()
-            ));
+            if (logger.isInfoEnabled()) {
+                logger.info(String.format("delete transactionId=%s success", request.getTransactionId()));
+            }
+        } else {
+            logger.error(String.format("result code:%s, result message:%s", response.getResult().getResultCode(),
+                    response.getResult().getResultMessage()));
         }
     }
 
