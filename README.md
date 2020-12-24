@@ -1,4 +1,4 @@
-# ZOLOZ Examples
+# ZOLOZ Examples in java
 This repository showcases examples of integrating ZOLOZ products:
 - [\[Build a minimum service to integrate ZOLOZ RealId (native) solution\]](basic/realid-native)(realid-native)
 - [\[Build a minimum service to integrate ZOLOZ RealId (H5) solution\]](basic/realid-h5)(realid-h5)
