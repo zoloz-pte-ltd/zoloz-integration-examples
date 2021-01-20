@@ -70,12 +70,20 @@ public class NativeRealIdController {
         apiReq.put("bizId", businessId);
         apiReq.put("flowType", "REALIDLITE_KYC");
         apiReq.put("docType", realIdConfig.getDocType());
+        if(request.get("docType") != null){
+            apiReq.put("docType",request.get("docType"));
+        }
         apiReq.put("pages", "1");
         apiReq.put("metaInfo", metaInfo);
         apiReq.put("userId", userId);
         if(StringUtils.isNotBlank(realIdConfig.getServiceLevel())){
             apiReq.put("serviceLevel",realIdConfig.getServiceLevel());
         }
+
+        if(request.get("serviceLevel") != null){
+            apiReq.put("serviceLevel",request.get("serviceLevel"));
+        }
+
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.realid.initialize",
