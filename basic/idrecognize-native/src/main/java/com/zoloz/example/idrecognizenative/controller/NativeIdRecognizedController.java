@@ -67,16 +67,16 @@ public class NativeIdRecognizedController {
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
-        apiReq.put("flowType", "REALIDLITE_KYC");
-        apiReq.put("docType", productConfig.getDocType());
-        apiReq.put("pages", "1");
+        if (request.getString("docType") == null) {
+            apiReq.put("docType", productConfig.getDocType());
+        } else {
+            apiReq.put("docType", request.getString("docType"));
+        }
+        apiReq.put("pages", request.getString("pages"));
         apiReq.put("metaInfo", metaInfo);
         apiReq.put("userId", userId);
 
-        String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.idrecognition.initialize",
-                JSON.toJSONString(apiReq)
-        );
+        String apiRespStr = openApiClient.callOpenApi("v1.zoloz.idrecognition.initialize", JSON.toJSONString(apiReq));
 
         JSONObject apiResp = JSON.parseObject(apiRespStr);
 
@@ -100,12 +100,10 @@ public class NativeIdRecognizedController {
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");
-        String isReturnImage = request.getString("isReturnImage");
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
         apiReq.put("transactionId", transactionId);
-        apiReq.put("isReturnImage", isReturnImage);
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.idrecognition.checkresult",
