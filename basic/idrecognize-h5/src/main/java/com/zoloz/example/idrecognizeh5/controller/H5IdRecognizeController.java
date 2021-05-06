@@ -79,7 +79,7 @@ public class H5IdRecognizeController {
 
         apiReq.put("pages", "1");
         apiReq.put("metaInfo", metaInfo);
-        apiReq.put("merchantUserId", userId);
+        apiReq.put("userId", userId);
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.idrecognition.initialize",
@@ -107,12 +107,10 @@ public class H5IdRecognizeController {
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");
-        String isReturnImage = request.getString("isReturnImage");
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
         apiReq.put("transactionId", transactionId);
-        apiReq.put("isReturnImage", isReturnImage);
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.idrecognition.checkresult",
