@@ -74,7 +74,7 @@ public class NativeIdRecognizedController {
         apiReq.put("userId", userId);
 
         String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.realid.initialize",
+                "v1.zoloz.idrecognition.initialize",
                 JSON.toJSONString(apiReq)
         );
 
@@ -108,7 +108,7 @@ public class NativeIdRecognizedController {
         apiReq.put("isReturnImage", isReturnImage);
 
         String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.realid.checkresult",
+                "v1.zoloz.idrecognition.checkresult",
                 JSON.toJSONString(apiReq)
         );
 
