@@ -22,6 +22,8 @@
 
 package com.zoloz.example.facecaptureh5.autoconfig;
 
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -32,4 +34,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ProductConfig {
 
+    @Getter
+    @Value("${product.serviceLevel:FACECAPTURE0002}")
+    private String serviceLevel = "FACECAPTURE0002";
 }

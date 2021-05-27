@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
  * client mode controller
  *
  * @author Zhongyang MA
-  */
+ */
 @CrossOrigin
 @RestController
 @RequestMapping(value = {"/api"})
@@ -72,7 +72,11 @@ public class NativeIdRecognizedController {
         } else {
             apiReq.put("docType", request.getString("docType"));
         }
-        apiReq.put("pages", request.getString("pages"));
+        if (request.getString("pages") == null) {
+            apiReq.put("pages", "1,2");
+        } else {
+            apiReq.put("pages", request.getString("pages"));
+        }
         apiReq.put("metaInfo", metaInfo);
         apiReq.put("userId", userId);
 
@@ -105,6 +109,10 @@ public class NativeIdRecognizedController {
         apiReq.put("bizId", businessId);
         apiReq.put("transactionId", transactionId);
 
+        if (request.getString("isReturnImage") != null) {
+            apiReq.put("isReturnImage", request.getString("isReturnImage"));
+        }
+
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.idrecognition.checkresult",
                 JSON.toJSONString(apiReq)
@@ -115,7 +123,6 @@ public class NativeIdRecognizedController {
         JSONObject response = new JSONObject(apiResp);
         return response;
     }
-
 
     @RequestMapping(value = "/privacyinfo/delete", method = RequestMethod.POST)
     public JSONObject privacyInfoDelete(@RequestBody JSONObject request) {

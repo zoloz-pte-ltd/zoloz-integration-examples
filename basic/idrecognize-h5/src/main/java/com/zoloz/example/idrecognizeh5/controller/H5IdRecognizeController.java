@@ -22,6 +22,9 @@
 
 package com.zoloz.example.idrecognizeh5.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
@@ -71,15 +74,47 @@ public class H5IdRecognizeController {
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
 
-        if(request.getString("docType")==null){
+        String resultUrl = String.format(
+                "%s://%s:%d/result.html",
+                servletRequest.getScheme(),
+                servletRequest.getServerName(),
+                servletRequest.getServerPort()
+        );
+
+        Map<String, String> h5ModeConfig = new HashMap<>();
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("isIframe") != null) {
+            h5ModeConfig.put("completeCallbackUrl", request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl"));
+            h5ModeConfig.put("interruptCallbackUrl", request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl"));
+            h5ModeConfig.put("isIframe", request.getJSONObject("h5ModeConfig").getString("isIframe"));
+        } else {
+            h5ModeConfig.put("completeCallbackUrl", resultUrl);
+            h5ModeConfig.put("interruptCallbackUrl", resultUrl);
+        }
+
+        if (request.getString("docType") == null) {
             apiReq.put("docType", productConfig.getDocType());
-        }else{
+        } else {
             apiReq.put("docType", request.getString("docType"));
         }
 
-        apiReq.put("pages", "1");
-        apiReq.put("metaInfo", metaInfo);
+        if (request.getString("pages") == null) {
+            apiReq.put("pages", "1");
+        } else {
+            apiReq.put("pages", request.getString("pages"));
+        }
+
+        if (request.getString("metaInfo") == null) {
+            apiReq.put("metaInfo", metaInfo);
+        } else {
+            apiReq.put("metaInfo", request.getString("metaInfo"));
+        }
         apiReq.put("userId", userId);
+        //增加isIframe入参
+        apiReq.put("h5ModeConfig", h5ModeConfig);
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request11=" + apiReq);
+        }
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.idrecognition.initialize",

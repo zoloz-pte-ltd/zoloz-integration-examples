@@ -31,6 +31,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import com.zoloz.api.sdk.client.OpenApiClient;
+import com.zoloz.example.facecaptureh5.autoconfig.ProductConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,8 @@ public class H5FaceCaptureController {
 
     @Autowired
     private OpenApiClient openApiClient;
+    @Autowired
+    private ProductConfig productConfig;
 
     @RequestMapping(value = "/facecapture/initialize", method = RequestMethod.POST)
     public JSONObject faceCaptureInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
@@ -77,15 +80,46 @@ public class H5FaceCaptureController {
                 servletRequest.getServerPort()
         );
 
+        /**
+         * 有isIframe：透传isIframe
+         * 无isIframe：不做处理，走原有逻辑
+         * 有completeCallbackUrl或interruptCallbackUrl：透传
+         * 无completeCallbackUrl或interruptCallbackUrl：服务端兜底写死
+         */
         Map<String, String> h5ModeConfig = new HashMap<>();
-        h5ModeConfig.put("completeCallbackUrl", resultUrl);
-        h5ModeConfig.put("interruptCallbackUrl",resultUrl);
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("isIframe") != null) {
+            h5ModeConfig.put("isIframe", request.getJSONObject("h5ModeConfig").getString("isIframe"));
+        }
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl")
+                != null) {
+            h5ModeConfig.put("completeCallbackUrl", request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl"));
+        }
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl")
+                != null) {
+            h5ModeConfig.put("interruptCallbackUrl", request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl"));
+        } else {
+            h5ModeConfig.put("completeCallbackUrl", resultUrl);
+            h5ModeConfig.put("interruptCallbackUrl", resultUrl);
+        }
 
-        //apiReq.put("pages", "1");
-        apiReq.put("metaInfo", metaInfo);
+        //serviceLevel
+        if (request.getString("serviceLevel") == null) {
+            apiReq.put("serviceLevel", productConfig.getServiceLevel());
+        } else {
+            apiReq.put("serviceLevel", request.getString("serviceLevel"));
+        }
+        if (request.getString("metaInfo") == null) {
+            apiReq.put("metaInfo", metaInfo);
+        } else {
+            apiReq.put("metaInfo", request.getString("metaInfo"));
+        }
         apiReq.put("userId", userId);
 
-        apiReq.put("h5ModeConfig",h5ModeConfig);
+        apiReq.put("h5ModeConfig", h5ModeConfig);
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request11=" + apiReq);
+        }
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.facecapture.initialize",

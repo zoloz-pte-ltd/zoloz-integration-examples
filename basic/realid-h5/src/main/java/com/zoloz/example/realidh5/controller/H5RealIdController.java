@@ -76,9 +76,9 @@ public class H5RealIdController {
         apiReq.put("bizId", businessId);
         apiReq.put("flowType", "H5_REALIDLITE_KYC");
 
-        if(request.getString("docType")==null){
+        if (request.getString("docType") == null) {
             apiReq.put("docType", realIdConfig.getDocType());
-        }else{
+        } else {
             apiReq.put("docType", request.getString("docType"));
         }
 
@@ -90,8 +90,15 @@ public class H5RealIdController {
         );
 
         Map<String, String> h5ModeConfig = new HashMap<>();
-        h5ModeConfig.put("completeCallbackUrl", resultUrl);
-        h5ModeConfig.put("interruptCallbackUrl",resultUrl);
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("isIframe") != null) {
+            h5ModeConfig.put("completeCallbackUrl", request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl"));
+            h5ModeConfig.put("interruptCallbackUrl", request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl"));
+            h5ModeConfig.put("isIframe", request.getJSONObject("h5ModeConfig").getString("isIframe"));
+        } else {
+            //走bizserver自带的页面
+            h5ModeConfig.put("completeCallbackUrl", resultUrl);
+            h5ModeConfig.put("interruptCallbackUrl", resultUrl);
+        }
 
         Map<String, String> pageConfig = new HashMap<>();
         if (request.getJSONObject("pageConfig") != null && request.getJSONObject("pageConfig").getString("urlFaceGuide") != null) {
@@ -101,12 +108,12 @@ public class H5RealIdController {
         //apiReq.put("pages", "1");
         apiReq.put("metaInfo", metaInfo);
         apiReq.put("userId", userId);
-        if(StringUtils.isNotBlank(realIdConfig.getServiceLevel())){
-            apiReq.put("serviceLevel",realIdConfig.getServiceLevel());
+        if (StringUtils.isNotBlank(realIdConfig.getServiceLevel())) {
+            apiReq.put("serviceLevel", realIdConfig.getServiceLevel());
         }
 
-        apiReq.put("h5ModeConfig",h5ModeConfig);
-        apiReq.put("pageConfig",pageConfig);
+        apiReq.put("h5ModeConfig", h5ModeConfig);
+        apiReq.put("pageConfig", pageConfig);
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.realid.initialize",
