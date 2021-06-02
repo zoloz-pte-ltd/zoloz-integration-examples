@@ -89,13 +89,24 @@ public class H5RealIdController {
                 servletRequest.getServerPort()
         );
 
+        /**
+         * 有isIframe：透传isIframe
+         * 无isIframe：不做处理，走原有逻辑
+         * 有completeCallbackUrl或interruptCallbackUrl：透传
+         * 无completeCallbackUrl或interruptCallbackUrl：服务端兜底写死
+         */
         Map<String, String> h5ModeConfig = new HashMap<>();
         if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("isIframe") != null) {
-            h5ModeConfig.put("completeCallbackUrl", request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl"));
-            h5ModeConfig.put("interruptCallbackUrl", request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl"));
             h5ModeConfig.put("isIframe", request.getJSONObject("h5ModeConfig").getString("isIframe"));
+        }
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl")
+                != null) {
+            h5ModeConfig.put("completeCallbackUrl", request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl"));
+        }
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl")
+                != null) {
+            h5ModeConfig.put("interruptCallbackUrl", request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl"));
         } else {
-            //走bizserver自带的页面
             h5ModeConfig.put("completeCallbackUrl", resultUrl);
             h5ModeConfig.put("interruptCallbackUrl", resultUrl);
         }
@@ -114,6 +125,10 @@ public class H5RealIdController {
 
         apiReq.put("h5ModeConfig", h5ModeConfig);
         apiReq.put("pageConfig", pageConfig);
+
+        if (logger.isInfoEnabled()) {
+            logger.info("apiRequest=" + apiReq);
+        }
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.realid.initialize",
