@@ -105,7 +105,7 @@ public class NativeFaceCaptureController {
         apiReq.put("isReturnImage", isReturnImage);
 
         String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.realid.checkresult",
+                "v1.zoloz.facecapture.checkresult",
                 JSON.toJSONString(apiReq)
         );
 

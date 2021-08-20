@@ -88,6 +88,14 @@ public class RealIdController {
         apiReq.put("metaInfo", "MOB_H5");
         apiReq.put("merchantUserId", "fixed-test-id");
 
+        Map<String, String> h5ModeConfig = new HashMap<>();
+        // TODO to be updated
+        String completeCallbackUrl = "http://completeCallbackUrl.html";
+        String interruptCallbackUrl = "http://interruptCallbackUrl.html";
+        h5ModeConfig.put("completeCallbackUrl", completeCallbackUrl);
+        h5ModeConfig.put("interruptCallbackUrl",interruptCallbackUrl);
+        apiReq.put("h5ModeConfig",h5ModeConfig);
+
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.idrecognition.initialize",
                 JSON.toJSONString(apiReq)
