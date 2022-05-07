@@ -22,6 +22,8 @@
 
 package com.zoloz.example.facecapturenative.autoconfig;
 
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -31,5 +33,16 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ProductConfig {
+
+    /**
+     * The service level, supported values:
+     * - FACECAPTURE0001: Lightweight
+     * - FACECAPTURE0002: Blink Only
+     * - FACECAPTURE0003: Random Motions
+     * - FACECAPTURE0004: Colorful
+     */
+    @Getter
+    @Value("${product.serviceLevel:FACECAPTURE0002}")
+    private String serviceLevel = "FACECAPTURE0002";
 
 }

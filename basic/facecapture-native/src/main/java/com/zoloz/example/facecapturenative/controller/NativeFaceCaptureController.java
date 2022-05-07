@@ -64,11 +64,16 @@ public class NativeFaceCaptureController {
         String metaInfo = request.getString("metaInfo");
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String userId = "dummy_userid_" + System.currentTimeMillis();
+        String serviceLevel = request.getString("serviceLevel");
+        if (serviceLevel == null) {
+            serviceLevel = productConfig.getServiceLevel();
+        }
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
         apiReq.put("metaInfo", metaInfo);
-        apiReq.put("merchantUserId", userId);
+        apiReq.put("userId", userId);
+        apiReq.put("serviceLevel", serviceLevel);
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.facecapture.initialize",
@@ -78,7 +83,6 @@ public class NativeFaceCaptureController {
         JSONObject apiResp = JSON.parseObject(apiRespStr);
 
         JSONObject response = new JSONObject(apiResp);
-        response.put("rsaPubKey", openApiClient.getOpenApiPublicKey());
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
         if (logger.isInfoEnabled()) {
