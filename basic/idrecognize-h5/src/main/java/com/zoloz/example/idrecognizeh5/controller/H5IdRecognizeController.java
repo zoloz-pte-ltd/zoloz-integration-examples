@@ -109,11 +109,12 @@ public class H5IdRecognizeController {
             apiReq.put("docType", request.getString("docType"));
         }
 
+        /* use server side configured default pages
         if (request.getString("pages") == null) {
             apiReq.put("pages", "1");
         } else {
             apiReq.put("pages", request.getString("pages"));
-        }
+        }*/
 
         if (request.getString("metaInfo") == null) {
             apiReq.put("metaInfo", metaInfo);

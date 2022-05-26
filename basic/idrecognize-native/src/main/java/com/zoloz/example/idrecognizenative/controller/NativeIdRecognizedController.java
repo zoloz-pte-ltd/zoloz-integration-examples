@@ -72,11 +72,12 @@ public class NativeIdRecognizedController {
         } else {
             apiReq.put("docType", request.getString("docType"));
         }
+        /* use server side configured default pages
         if (request.getString("pages") == null) {
             apiReq.put("pages", "1,2");
         } else {
             apiReq.put("pages", request.getString("pages"));
-        }
+        }*/
         apiReq.put("metaInfo", metaInfo);
         apiReq.put("userId", userId);
 

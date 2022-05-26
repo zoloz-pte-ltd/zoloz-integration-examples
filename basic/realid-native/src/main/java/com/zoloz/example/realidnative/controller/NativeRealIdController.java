@@ -73,7 +73,8 @@ public class NativeRealIdController {
         if(request.get("docType") != null){
             apiReq.put("docType",request.get("docType"));
         }
-        apiReq.put("pages", "1");
+        // use server side configured default pages
+        // apiReq.put("pages", "1");
         apiReq.put("metaInfo", metaInfo);
         apiReq.put("userId", userId);
         if(StringUtils.isNotBlank(realIdConfig.getServiceLevel())){
