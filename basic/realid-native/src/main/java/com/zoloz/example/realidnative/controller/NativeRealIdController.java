@@ -22,6 +22,8 @@
 
 package com.zoloz.example.realidnative.controller;
 
+import java.util.List;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -73,6 +75,18 @@ public class NativeRealIdController {
         if(request.get("docType") != null){
             apiReq.put("docType",request.get("docType"));
         }
+
+        if (request.getJSONObject("productConfig") != null) {
+            JSONObject productConfig = request.getJSONObject("productConfig");
+            List pageInfoCheck = (List) productConfig.get("pageInfoCheck");
+            if (pageInfoCheck != null && pageInfoCheck.size() != 0) {
+                apiReq.put("pageInfoCheck", pageInfoCheck);
+            }
+            if (productConfig.getString("preciseTamperCheck") != null) {
+                apiReq.put("preciseTamperCheck", productConfig.getString("preciseTamperCheck"));
+            }
+        }
+
         // use server side configured default pages
         // apiReq.put("pages", "1");
         apiReq.put("metaInfo", metaInfo);

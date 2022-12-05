@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -108,6 +109,17 @@ public class H5RealIdController {
         Map<String, String> pageConfig = new HashMap<>();
         if (request.getJSONObject("pageConfig") != null && request.getJSONObject("pageConfig").getString("urlFaceGuide") != null) {
             pageConfig.put("urlFaceGuide", request.getJSONObject("pageConfig").getString("urlFaceGuide"));
+        }
+
+        if (request.getJSONObject("productConfig") != null) {
+            JSONObject productConfig = request.getJSONObject("productConfig");
+            List pageInfoCheck = (List) productConfig.get("pageInfoCheck");
+            if (pageInfoCheck != null && pageInfoCheck.size() != 0) {
+                apiReq.put("pageInfoCheck", pageInfoCheck);
+            }
+            if (productConfig.getString("preciseTamperCheck") != null) {
+                apiReq.put("preciseTamperCheck", productConfig.getString("preciseTamperCheck"));
+            }
         }
 
         //apiReq.put("pages", "1");
