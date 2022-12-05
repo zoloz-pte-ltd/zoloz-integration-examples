@@ -20,29 +20,39 @@
  * SOFTWARE.
  */
 
-const baseUrl = '.'; // request Api url
+package util;
 
-function getUrlParam(name) {
-  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
-  const r = window.location.search.substr(1).match(reg);
-  if (r != null) { return r[2]; }
-  // exist # before ?
-  const after = window.location.hash.split('?')[1];
-  if (after) {
-    const re = after.match(reg);
-    if (re != null) { return re[2]; }
-  }
-  return '';
+import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * key loading utility
+ *
+ * @author Zhang Fang
+  */
+public class KeyUtil {
+
+    /**
+     * load RSA key content from (pem or base64) file
+     *
+     * @param keyPath path of pem file
+     * @return base64 encoded content of the key
+     * @throws IOException
+     */
+    @SneakyThrows(IOException.class)
+    public static String loadKeyContent(String keyPath) {
+
+        String content = FileUtils.readFileToString(new File(keyPath), "UTF-8");
+
+        String[] lines = content.split("\n");
+
+        return Stream.of(lines)
+                .filter(line -> !line.startsWith("--"))
+                .collect(Collectors.joining(""));
+    }
 }
-
-async function request(url, options) {
-  try {
-    const response = await fetch(url, options);
-    const data = await response.json();
-    return data;
-  } catch (e) {
-    return {error: 'NETWORK_ERROR'};
-  }
-}
-
-

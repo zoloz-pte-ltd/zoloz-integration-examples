@@ -24,7 +24,6 @@
 <configuration>
 
     <properties>
-        <!-- log file format -->
         <property name="DEFAULT_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{traceid}] [%thread] %-5level %logger{50} - %msg%n</property>
         <property name="DIGEST_PATTERN">%msg%n</property>
         <property name="LOGGING_HOME">./logs</property>
@@ -35,15 +34,15 @@
         <Console name="CONSOLE" target="system_out">
             <PatternLayout pattern="${DEFAULT_PATTERN}" />
         </Console>
-        <RollingFile name="DEFAULT-APPENDER" fileName="${LOGGING_HOME}/realid-h5-bizserver.log"
-                     filePattern="${LOGGING_HOME}/realid-h5-bizserver.log.%d{yyyy-MM-dd}">
+        <RollingFile name="DEFAULT-APPENDER" fileName="${LOGGING_HOME}/connect-native-bizserver.log"
+                     filePattern="${LOGGING_HOME}/connect-native-bizserver.log.%d{yyyy-MM-dd}">
             <PatternLayout pattern="${DEFAULT_PATTERN}" />
             <Policies>
                 <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
             </Policies>
             <DefaultRolloverStrategy>
                 <Delete basePath="${LOGGING_HOME}/" maxDepth="1">
-                    <IfFileName glob="realid-h5-bizserver.log.*" />
+                    <IfFileName glob="connect-native-bizserver.log.*" />
                     <IfLastModified age="14d" />
                 </Delete>
             </DefaultRolloverStrategy>
@@ -55,7 +54,7 @@
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="DEFAULT-APPENDER"/>
         </root>
-        <logger name="com.zoloz.example"  level="${LOGGING_LEVEL}">
+        <logger name="com.zoloz.example" level="${LOGGING_LEVEL}" >
             <appender-ref ref="DEFAULT-APPENDER"/>
         </logger>
     </loggers>

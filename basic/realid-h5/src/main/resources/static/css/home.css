@@ -68,7 +68,8 @@ body {
   background: url("./../image/selectoricon.png") no-repeat 96%;
   background-size: 12px;
   -webkit-tap-highlight-color: rgba(255,255,255,0);
-  /* selector右边小三角去除 */
+  /* remove triangle right of selector
+    selector 右边小三角去除 */
   -webkit-appearance: none;
 }
 .routerView .mainContainer .cellContainer .zListLabel {
@@ -125,7 +126,8 @@ body {
   font-weight: bold;
 }
 
-/* 选中时黄色框去除 */
+/* remove yellow box when selected
+    选中时黄色框去除 */
 :focus{
   outline: 0;
 }

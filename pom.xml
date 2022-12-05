@@ -44,9 +44,11 @@
         <module>basic/realid-h5</module>
 
         <module>basic/privacydelete-api</module>
+        <module>basic/connect-native</module>
 
         <!-- BEGIN examples of complicated combination -->
         <module>advanced/webekyc-demo</module>
+        <module>advanced/nativeconnect-demo</module>
         <!-- END examples of complicated combination -->
 
 

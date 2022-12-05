@@ -24,7 +24,6 @@
 <configuration>
 
     <properties>
-        <!-- 文件输出格式 -->
         <property name="DEFAULT_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{traceid}] [%thread] %-5level %logger{50} - %msg%n</property>
         <property name="DIGEST_PATTERN">%msg%n</property>
         <property name="LOGGING_HOME">./logs</property>

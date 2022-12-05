@@ -22,24 +22,18 @@
 
 package com.zoloz.example.idrecognizeh5.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.idrecognizeh5.autoconfig.ProductConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Controller providing APIs for front-end
@@ -82,10 +76,10 @@ public class H5IdRecognizeController {
         );
 
         /**
-         * 有isIframe：透传isIframe
-         * 无isIframe：不做处理，走原有逻辑
-         * 有completeCallbackUrl或interruptCallbackUrl：透传
-         * 无completeCallbackUrl或interruptCallbackUrl：服务端兜底写死
+         * with isIframe：transparent transmits isIframe
+         * without isIframe： do nothing
+         * with completeCallbackUrl  or interruptCallbackUrl：transparent transmits this value
+         * without completeCallbackUrl or interruptCallbackUrl：server do hard code
          */
         Map<String, String> h5ModeConfig = new HashMap<>();
         if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("isIframe") != null) {
@@ -122,7 +116,7 @@ public class H5IdRecognizeController {
             apiReq.put("metaInfo", request.getString("metaInfo"));
         }
         apiReq.put("userId", userId);
-        //增加isIframe入参
+
         apiReq.put("h5ModeConfig", h5ModeConfig);
 
         if (logger.isInfoEnabled()) {
@@ -164,10 +158,10 @@ public class H5IdRecognizeController {
                 "v1.zoloz.idrecognition.checkresult",
                 JSON.toJSONString(apiReq)
         );
+        if(logger.isInfoEnabled()){
+            logger.info("checkresult response: "+apiRespStr);
+        }
 
-        JSONObject apiResp = JSON.parseObject(apiRespStr);
-
-        JSONObject response = new JSONObject(apiResp);
-        return response;
+        return JSON.parseObject(apiRespStr);
     }
 }
