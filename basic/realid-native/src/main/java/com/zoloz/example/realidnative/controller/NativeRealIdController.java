@@ -77,14 +77,15 @@ public class NativeRealIdController {
         }
 
         if (request.getJSONObject("productConfig") != null) {
-            JSONObject productConfig = request.getJSONObject("productConfig");
-            List pageInfoCheck = (List) productConfig.get("pageInfoCheck");
+            JSONObject productConfig = new JSONObject();
+            List pageInfoCheck = (List) request.getJSONObject("productConfig").get("pageInfoCheck");
             if (pageInfoCheck != null && pageInfoCheck.size() != 0) {
-                apiReq.put("pageInfoCheck", pageInfoCheck);
+                productConfig.put("pageInfoCheck", pageInfoCheck);
             }
-            if (productConfig.getString("preciseTamperCheck") != null) {
-                apiReq.put("preciseTamperCheck", productConfig.getString("preciseTamperCheck"));
+            if (request.getJSONObject("productConfig").getString("preciseTamperCheck") != null) {
+                productConfig.put("preciseTamperCheck", request.getJSONObject("productConfig").getString("preciseTamperCheck"));
             }
+            apiReq.put("productConfig", productConfig);
         }
 
         // use server side configured default pages
