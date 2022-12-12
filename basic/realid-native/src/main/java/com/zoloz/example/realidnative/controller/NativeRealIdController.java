@@ -22,13 +22,16 @@
 
 package com.zoloz.example.realidnative.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.realidnative.autoconfig.ProductConfig;
+import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,8 +80,16 @@ public class NativeRealIdController {
         }
 
         JSONObject productConfig = new JSONObject();
-        if (request.get("pageInfoCheck") != null) {
-            productConfig.put("pageInfoCheck", request.get("pageInfoCheck"));
+        ArrayList<CheckItem> pageInfoCheck = new ArrayList<>();
+        JSONArray pageInfoCheckItem = request.getJSONArray("pageInfoCheck");
+        if (pageInfoCheckItem != null && pageInfoCheckItem.size() > 0) {
+            for (int i = 0; i < pageInfoCheckItem.size(); i++) {
+                String item = (String) pageInfoCheckItem.get(i);
+                CheckItem checkItem = new CheckItem();
+                checkItem.setName(item);
+                pageInfoCheck.add(checkItem);
+            }
+            productConfig.put("pageInfoCheck", pageInfoCheck);
         }
         if (request.get("preciseTamperCheck") != null) {
             productConfig.put("preciseTamperCheck", request.get("preciseTamperCheck"));
@@ -169,5 +180,10 @@ public class NativeRealIdController {
 
         JSONObject response = new JSONObject(apiResp);
         return response;
+    }
+
+    @Data
+    public static class CheckItem{
+        private String name;
     }
 }
