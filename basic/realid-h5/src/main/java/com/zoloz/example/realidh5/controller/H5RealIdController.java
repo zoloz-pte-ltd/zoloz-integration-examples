@@ -111,15 +111,14 @@ public class H5RealIdController {
             pageConfig.put("urlFaceGuide", request.getJSONObject("pageConfig").getString("urlFaceGuide"));
         }
 
-        if (request.getJSONObject("productConfig") != null) {
-            JSONObject productConfig = new JSONObject();
-            List pageInfoCheck = (List) request.getJSONObject("productConfig").get("pageInfoCheck");
-            if (pageInfoCheck != null && pageInfoCheck.size() != 0) {
-                productConfig.put("pageInfoCheck", pageInfoCheck);
-            }
-            if (request.getJSONObject("productConfig").getString("preciseTamperCheck") != null) {
-                productConfig.put("preciseTamperCheck", request.getJSONObject("productConfig").getString("preciseTamperCheck"));
-            }
+        JSONObject productConfig = new JSONObject();
+        if (request.get("pageInfoCheck") != null) {
+            productConfig.put("pageInfoCheck", request.get("pageInfoCheck"));
+        }
+        if (request.get("preciseTamperCheck") != null) {
+            productConfig.put("preciseTamperCheck", request.get("preciseTamperCheck"));
+        }
+        if (productConfig.containsKey("pageInfoCheck") || productConfig.containsKey("preciseTamperCheck")) {
             apiReq.put("productConfig", productConfig);
         }
 
