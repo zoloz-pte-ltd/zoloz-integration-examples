@@ -96,6 +96,23 @@ public class H5FaceCaptureController {
             h5ModeConfig.put("interruptCallbackUrl", resultUrl);
         }
 
+        Map<String, Object> faceProductConfig = new HashMap<>();
+        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getString("livenessMode") != null) {
+            faceProductConfig.put("livenessMode", request.getJSONObject("faceProductConfig").getString("livenessMode"));
+        }
+        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getString("antiInjectionMode") != null) {
+            faceProductConfig.put("antiInjectionMode", request.getJSONObject("faceProductConfig").getString("antiInjectionMode"));
+        }
+        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItem") != null) {
+            faceProductConfig.put("actionCheckItem", request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItem"));
+        }
+        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getString("actionRandom") != null) {
+            faceProductConfig.put("actionRandom", request.getJSONObject("faceProductConfig").getString("actionRandom"));
+        }
+        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getJSONArray("actionFrame") != null) {
+            faceProductConfig.put("actionFrame", request.getJSONObject("faceProductConfig").getJSONArray("actionFrame"));
+        }
+
         //serviceLevel
         if (request.getString("serviceLevel") == null) {
             apiReq.put("serviceLevel", productConfig.getServiceLevel());
@@ -110,6 +127,8 @@ public class H5FaceCaptureController {
         apiReq.put("userId", userId);
 
         apiReq.put("h5ModeConfig", h5ModeConfig);
+
+        apiReq.put("productConfig", faceProductConfig);
 
         if (logger.isInfoEnabled()) {
             logger.info("request11=" + apiReq);
