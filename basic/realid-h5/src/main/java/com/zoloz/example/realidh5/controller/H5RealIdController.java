@@ -27,7 +27,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.realidh5.autoconfig.ProductConfig;
-import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,6 +70,7 @@ public class H5RealIdController {
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
         apiReq.put("flowType", "H5_REALIDLITE_KYC");
+        apiReq.put("operationMode", "STRICT");
 
         if (request.getString("docType") == null) {
             apiReq.put("docType", realIdConfig.getDocType());
@@ -115,30 +112,14 @@ public class H5RealIdController {
             pageConfig.put("urlFaceGuide", request.getJSONObject("pageConfig").getString("urlFaceGuide"));
         }
 
-        JSONObject productConfig = new JSONObject();
-        ArrayList<CheckItem> pageInfoCheck = new ArrayList<>();
-        JSONArray pageInfoCheckItem = request.getJSONArray("pageInfoCheck");
-        if (pageInfoCheckItem != null && pageInfoCheckItem.size() > 0) {
-            for (int i = 0; i < pageInfoCheckItem.size(); i++) {
-                String item = (String) pageInfoCheckItem.get(i);
-                CheckItem checkItem = new CheckItem();
-                checkItem.setName(item);
-                pageInfoCheck.add(checkItem);
-            }
-            productConfig.put("pageInfoCheck", pageInfoCheck);
-        }
-        if (request.get("preciseTamperCheck") != null) {
-            productConfig.put("preciseTamperCheck", request.get("preciseTamperCheck"));
-        }
-        if (productConfig.containsKey("pageInfoCheck") || productConfig.containsKey("preciseTamperCheck")) {
-            apiReq.put("productConfig", productConfig);
-        }
-
         //apiReq.put("pages", "1");
         apiReq.put("metaInfo", metaInfo);
         apiReq.put("userId", userId);
-        if (StringUtils.isNotBlank(realIdConfig.getServiceLevel())) {
+
+        if (request.getString("serviceLevel") == null) {
             apiReq.put("serviceLevel", realIdConfig.getServiceLevel());
+        } else {
+            apiReq.put("serviceLevel", request.getString("serviceLevel"));
         }
 
         apiReq.put("h5ModeConfig", h5ModeConfig);
@@ -173,6 +154,230 @@ public class H5RealIdController {
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");
         String isReturnImage = request.getString("isReturnImage");
+        JSONArray extraImageControlList = request.getJSONArray("extraImageControlList");
+
+        JSONObject apiReq = new JSONObject();
+        apiReq.put("bizId", businessId);
+        apiReq.put("transactionId", transactionId);
+        apiReq.put("isReturnImage", isReturnImage);
+        apiReq.put("extraImageControlList", extraImageControlList);
+
+        String apiRespStr = openApiClient.callOpenApi(
+                "v1.zoloz.realid.checkresult",
+                JSON.toJSONString(apiReq)
+        );
+
+        JSONObject apiResp = JSON.parseObject(apiRespStr);
+
+        return new JSONObject(apiResp);
+    }
+
+    @RequestMapping(value = "/idrecognition/initialize", method = RequestMethod.POST)
+    public JSONObject idRecognizeInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
+
+        String metaInfo = "MOB_H5";
+
+        String businessId = "dummy_bizid_" + System.currentTimeMillis();
+        String userId = "dummy_userid_" + System.currentTimeMillis();
+
+        JSONObject apiReq = new JSONObject();
+        apiReq.put("bizId", businessId);
+
+        String resultUrl = String.format(
+                "%s://%s:%d/result.html",
+                servletRequest.getScheme(),
+                servletRequest.getServerName(),
+                servletRequest.getServerPort()
+        );
+
+        /**
+         * 有isIframe：透传isIframe
+         * 无isIframe：不做处理，走原有逻辑
+         * 有completeCallbackUrl或interruptCallbackUrl：透传
+         * 无completeCallbackUrl或interruptCallbackUrl：服务端兜底写死
+         */
+        Map<String, String> h5ModeConfig = new HashMap<>();
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("isIframe") != null) {
+            h5ModeConfig.put("isIframe", request.getJSONObject("h5ModeConfig").getString("isIframe"));
+        }
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl")
+                != null) {
+            h5ModeConfig.put("completeCallbackUrl", request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl"));
+        }
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl")
+                != null) {
+            h5ModeConfig.put("interruptCallbackUrl", request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl"));
+        } else {
+            h5ModeConfig.put("completeCallbackUrl", resultUrl);
+            h5ModeConfig.put("interruptCallbackUrl", resultUrl);
+        }
+        // h5ModeConfig.put("uiCfg", "{\"captureMode\":\"landscape\"}");
+
+
+        if (request.getString("docType") == null) {
+            apiReq.put("docType", realIdConfig.getDocType());
+        } else {
+            apiReq.put("docType", request.getString("docType"));
+        }
+
+        // if (request.getString("pages") == null) {
+        //     apiReq.put("pages", "1");
+        // } else {
+        //     apiReq.put("pages", request.getString("pages"));
+        // }
+
+        if (request.getString("metaInfo") == null) {
+            apiReq.put("metaInfo", metaInfo);
+        } else {
+            apiReq.put("metaInfo", request.getString("metaInfo"));
+        }
+        apiReq.put("userId", userId);
+        //serviceLevel
+        if (request.getString("serviceLevel") != null) {
+            apiReq.put("serviceLevel", request.getString("serviceLevel"));
+        }        
+        //增加isIframe入参
+        apiReq.put("h5ModeConfig", h5ModeConfig);
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request11=" + apiReq);
+        }
+
+        String apiRespStr = openApiClient.callOpenApi(
+                "v1.zoloz.idrecognition.initialize",
+                JSON.toJSONString(apiReq)
+        );
+
+        JSONObject apiResp = JSON.parseObject(apiRespStr);
+
+        JSONObject response = new JSONObject(apiResp);
+        response.put("transactionId", apiResp.getString("transactionId"));
+        response.put("clientCfg", apiResp.getString("clientCfg"));
+        if (logger.isInfoEnabled()) {
+            logger.info("response=" + apiRespStr);
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "/idrecognition/checkresult", method = RequestMethod.POST)
+    public JSONObject idRecognizeCheck(@RequestBody JSONObject request) {
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
+
+        String businessId = "dummy_bizid_" + System.currentTimeMillis();
+        String transactionId = request.getString("transactionId");
+
+        JSONObject apiReq = new JSONObject();
+        apiReq.put("bizId", businessId);
+        apiReq.put("transactionId", transactionId);
+
+        String apiRespStr = openApiClient.callOpenApi(
+                "v1.zoloz.idrecognition.checkresult",
+                JSON.toJSONString(apiReq)
+        );
+
+        JSONObject apiResp = JSON.parseObject(apiRespStr);
+
+        JSONObject response = new JSONObject(apiResp);
+        return response;
+    }
+
+    @RequestMapping(value = "/facecapture/initialize", method = RequestMethod.POST)
+    public JSONObject faceCaptureInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
+
+        String metaInfo = "MOB_H5";
+
+        String businessId = "dummy_bizid_" + System.currentTimeMillis();
+        String userId = "dummy_userid_" + System.currentTimeMillis();
+
+        JSONObject apiReq = new JSONObject();
+        apiReq.put("bizId", businessId);
+
+        String resultUrl = String.format(
+                "%s://%s:%d/result.html",
+                servletRequest.getScheme(),
+                servletRequest.getServerName(),
+                servletRequest.getServerPort()
+        );
+
+        /**
+         * 有isIframe：透传isIframe
+         * 无isIframe：不做处理，走原有逻辑
+         * 有completeCallbackUrl或interruptCallbackUrl：透传
+         * 无completeCallbackUrl或interruptCallbackUrl：服务端兜底写死
+         */
+        Map<String, String> h5ModeConfig = new HashMap<>();
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("isIframe") != null) {
+            h5ModeConfig.put("isIframe", request.getJSONObject("h5ModeConfig").getString("isIframe"));
+        }
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl")
+                != null) {
+            h5ModeConfig.put("completeCallbackUrl", request.getJSONObject("h5ModeConfig").getString("completeCallbackUrl"));
+        }
+        if (request.getJSONObject("h5ModeConfig") != null && request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl")
+                != null) {
+            h5ModeConfig.put("interruptCallbackUrl", request.getJSONObject("h5ModeConfig").getString("interruptCallbackUrl"));
+        } else {
+            h5ModeConfig.put("completeCallbackUrl", resultUrl);
+            h5ModeConfig.put("interruptCallbackUrl", resultUrl);
+        }
+        h5ModeConfig.put("locale", "id");
+
+        //serviceLevel
+        if (request.getString("serviceLevel") == null) {
+            apiReq.put("serviceLevel", "FACECAPTURE0002");
+        } else {
+            apiReq.put("serviceLevel", request.getString("serviceLevel"));
+        }
+        if (request.getString("metaInfo") == null) {
+            apiReq.put("metaInfo", metaInfo);
+        } else {
+            apiReq.put("metaInfo", request.getString("metaInfo"));
+        }
+        apiReq.put("userId", userId);
+
+        apiReq.put("h5ModeConfig", h5ModeConfig);
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request11=" + apiReq);
+        }
+
+        String apiRespStr = openApiClient.callOpenApi(
+                "v1.zoloz.facecapture.initialize",
+                JSON.toJSONString(apiReq)
+        );
+        JSONObject apiResp = JSON.parseObject(apiRespStr);
+        JSONObject response = new JSONObject(apiResp);
+        response.put("transactionId", apiResp.getString("transactionId"));
+        response.put("clientCfg", apiResp.getString("clientCfg"));
+        if (logger.isInfoEnabled()) {
+            logger.info("response=" + apiRespStr);
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "/facecapture/checkresult", method = RequestMethod.POST)
+    public JSONObject faceCaptureCheck(@RequestBody JSONObject request) {
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
+
+        String businessId = "dummy_bizid_" + System.currentTimeMillis();
+        String transactionId = request.getString("transactionId");
+        String isReturnImage = request.getString("isReturnImage");
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
@@ -180,7 +385,7 @@ public class H5RealIdController {
         apiReq.put("isReturnImage", isReturnImage);
 
         String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.realid.checkresult",
+                "v1.zoloz.facecapture.checkresult",
                 JSON.toJSONString(apiReq)
         );
 
@@ -189,10 +394,5 @@ public class H5RealIdController {
         }
 
         return JSON.parseObject(apiRespStr);
-    }
-
-    @Data
-    public static class CheckItem{
-        private String name;
     }
 }
