@@ -27,7 +27,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.realidh5.autoconfig.ProductConfig;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,7 @@ public class H5RealIdController {
     public JSONObject realIdInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
         if (logger.isInfoEnabled()) {
-            logger.info("request=" + request);
+            logger.info("realIdInit request=" + request);
         }
 
         String metaInfo = "MOB_H5";
@@ -126,7 +125,7 @@ public class H5RealIdController {
         apiReq.put("pageConfig", pageConfig);
 
         if (logger.isInfoEnabled()) {
-            logger.info("apiRequest=" + apiReq);
+            logger.info("realid initialize request=" + apiReq);
         }
 
         String apiRespStr = openApiClient.callOpenApi(
@@ -138,7 +137,7 @@ public class H5RealIdController {
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
         if (logger.isInfoEnabled()) {
-            logger.info("response=" + apiRespStr);
+            logger.info("realid initialize response=" + apiRespStr);
         }
 
         return response;
@@ -148,7 +147,7 @@ public class H5RealIdController {
     public JSONObject realIdCheck(@RequestBody JSONObject request) {
 
         if (logger.isInfoEnabled()) {
-            logger.info("request=" + request);
+            logger.info("realIdCheck request=" + request);
         }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
@@ -176,7 +175,7 @@ public class H5RealIdController {
     public JSONObject idRecognizeInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
         if (logger.isInfoEnabled()) {
-            logger.info("request=" + request);
+            logger.info("idRecognizeInit request=" + request);
         }
 
         String metaInfo = "MOB_H5";
@@ -244,7 +243,7 @@ public class H5RealIdController {
         apiReq.put("h5ModeConfig", h5ModeConfig);
 
         if (logger.isInfoEnabled()) {
-            logger.info("request11=" + apiReq);
+            logger.info("idrecognition initialize request=" + apiReq);
         }
 
         String apiRespStr = openApiClient.callOpenApi(
@@ -258,7 +257,7 @@ public class H5RealIdController {
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
         if (logger.isInfoEnabled()) {
-            logger.info("response=" + apiRespStr);
+            logger.info("idrecognition initialize response=" + apiRespStr);
         }
 
         return response;
@@ -268,7 +267,7 @@ public class H5RealIdController {
     public JSONObject idRecognizeCheck(@RequestBody JSONObject request) {
 
         if (logger.isInfoEnabled()) {
-            logger.info("request=" + request);
+            logger.info("idRecognizeCheck request=" + request);
         }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
@@ -293,7 +292,7 @@ public class H5RealIdController {
     public JSONObject faceCaptureInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
         if (logger.isInfoEnabled()) {
-            logger.info("request=" + request);
+            logger.info("faceCaptureInit request=" + request);
         }
 
         String metaInfo = "MOB_H5";
@@ -334,6 +333,26 @@ public class H5RealIdController {
         }
         h5ModeConfig.put("locale", "id");
 
+        if (request.getJSONObject("faceProductConfig") != null) {
+            Map<String, Object> faceProductConfig = new HashMap<>();
+            if (request.getJSONObject("faceProductConfig").getString("livenessMode") != null) {
+                faceProductConfig.put("livenessMode", request.getJSONObject("faceProductConfig").getString("livenessMode"));
+            }
+            if (request.getJSONObject("faceProductConfig").getString("antiInjectionMode") != null) {
+                faceProductConfig.put("antiInjectionMode", request.getJSONObject("faceProductConfig").getString("antiInjectionMode"));
+            }
+            if (request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItems") != null) {
+                faceProductConfig.put("actionCheckItems", request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItems"));
+            }
+            if (request.getJSONObject("faceProductConfig").getString("actionRandom") != null) {
+                faceProductConfig.put("actionRandom", request.getJSONObject("faceProductConfig").getString("actionRandom"));
+            }
+            if (request.getJSONObject("faceProductConfig").getJSONArray("actionFrame") != null) {
+                faceProductConfig.put("actionFrame", request.getJSONObject("faceProductConfig").getJSONArray("actionFrame"));
+            }
+            apiReq.put("productConfig", faceProductConfig);
+        }
+
         //serviceLevel
         if (request.getString("serviceLevel") == null) {
             apiReq.put("serviceLevel", "FACECAPTURE0002");
@@ -350,7 +369,7 @@ public class H5RealIdController {
         apiReq.put("h5ModeConfig", h5ModeConfig);
 
         if (logger.isInfoEnabled()) {
-            logger.info("request11=" + apiReq);
+            logger.info("facecapture initialize request=" + apiReq);
         }
 
         String apiRespStr = openApiClient.callOpenApi(
@@ -362,7 +381,7 @@ public class H5RealIdController {
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
         if (logger.isInfoEnabled()) {
-            logger.info("response=" + apiRespStr);
+            logger.info("facecapture initialize response=" + apiRespStr);
         }
 
         return response;
@@ -372,27 +391,28 @@ public class H5RealIdController {
     public JSONObject faceCaptureCheck(@RequestBody JSONObject request) {
 
         if (logger.isInfoEnabled()) {
-            logger.info("request=" + request);
+            logger.info("faceCaptureCheck request=" + request);
         }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");
         String isReturnImage = request.getString("isReturnImage");
+        JSONArray extraImageControlList = request.getJSONArray("extraImageControlList");
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
         apiReq.put("transactionId", transactionId);
         apiReq.put("isReturnImage", isReturnImage);
+        apiReq.put("extraImageControlList", extraImageControlList);
 
         String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.facecapture.checkresult",
+                "v1a.zoloz.facecapture.checkresult",
                 JSON.toJSONString(apiReq)
         );
 
-        if(logger.isInfoEnabled()){
-            logger.info("checkresult response: "+apiRespStr);
-        }
+        JSONObject apiResp = JSON.parseObject(apiRespStr);
 
-        return JSON.parseObject(apiRespStr);
+        JSONObject response = new JSONObject(apiResp);
+        return response;
     }
 }

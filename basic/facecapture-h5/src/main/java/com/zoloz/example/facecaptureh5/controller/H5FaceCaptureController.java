@@ -24,6 +24,7 @@ package com.zoloz.example.facecaptureh5.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.facecaptureh5.autoconfig.ProductConfig;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +58,7 @@ public class H5FaceCaptureController {
     public JSONObject faceCaptureInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
         if (logger.isInfoEnabled()) {
-            logger.info("request=" + request);
+            logger.info("faceCaptureInit request=" + request);
         }
 
         String metaInfo = "MOB_H5";
@@ -96,21 +98,24 @@ public class H5FaceCaptureController {
             h5ModeConfig.put("interruptCallbackUrl", resultUrl);
         }
 
-        Map<String, Object> faceProductConfig = new HashMap<>();
-        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getString("livenessMode") != null) {
-            faceProductConfig.put("livenessMode", request.getJSONObject("faceProductConfig").getString("livenessMode"));
-        }
-        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getString("antiInjectionMode") != null) {
-            faceProductConfig.put("antiInjectionMode", request.getJSONObject("faceProductConfig").getString("antiInjectionMode"));
-        }
-        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItem") != null) {
-            faceProductConfig.put("actionCheckItem", request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItem"));
-        }
-        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getString("actionRandom") != null) {
-            faceProductConfig.put("actionRandom", request.getJSONObject("faceProductConfig").getString("actionRandom"));
-        }
-        if (request.getJSONObject("faceProductConfig") != null && request.getJSONObject("faceProductConfig").getJSONArray("actionFrame") != null) {
-            faceProductConfig.put("actionFrame", request.getJSONObject("faceProductConfig").getJSONArray("actionFrame"));
+        if (request.getJSONObject("faceProductConfig") != null) {
+            Map<String, Object> faceProductConfig = new HashMap<>();
+            if (request.getJSONObject("faceProductConfig").getString("livenessMode") != null) {
+                faceProductConfig.put("livenessMode", request.getJSONObject("faceProductConfig").getString("livenessMode"));
+            }
+            if (request.getJSONObject("faceProductConfig").getString("antiInjectionMode") != null) {
+                faceProductConfig.put("antiInjectionMode", request.getJSONObject("faceProductConfig").getString("antiInjectionMode"));
+            }
+            if (request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItems") != null) {
+                faceProductConfig.put("actionCheckItems", request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItems"));
+            }
+            if (request.getJSONObject("faceProductConfig").getString("actionRandom") != null) {
+                faceProductConfig.put("actionRandom", request.getJSONObject("faceProductConfig").getString("actionRandom"));
+            }
+            if (request.getJSONObject("faceProductConfig").getJSONArray("actionFrame") != null) {
+                faceProductConfig.put("actionFrame", request.getJSONObject("faceProductConfig").getJSONArray("actionFrame"));
+            }
+            apiReq.put("productConfig", faceProductConfig);
         }
 
         //serviceLevel
@@ -128,10 +133,9 @@ public class H5FaceCaptureController {
 
         apiReq.put("h5ModeConfig", h5ModeConfig);
 
-        apiReq.put("productConfig", faceProductConfig);
 
         if (logger.isInfoEnabled()) {
-            logger.info("request11=" + apiReq);
+            logger.info("facecapture initialize request=" + apiReq);
         }
 
         String apiRespStr = openApiClient.callOpenApi(
@@ -143,7 +147,7 @@ public class H5FaceCaptureController {
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
         if (logger.isInfoEnabled()) {
-            logger.info("response=" + apiRespStr);
+            logger.info("facecapture initialize response=" + apiRespStr);
         }
 
         return response;
@@ -153,7 +157,7 @@ public class H5FaceCaptureController {
     public JSONObject faceCaptureCheck(@RequestBody JSONObject request) {
 
         if (logger.isInfoEnabled()) {
-            logger.info("request=" + request);
+            logger.info("faceCaptureCheck request=" + request);
         }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
@@ -164,14 +168,15 @@ public class H5FaceCaptureController {
         apiReq.put("bizId", businessId);
         apiReq.put("transactionId", transactionId);
         apiReq.put("isReturnImage", isReturnImage);
+        logger.info("facecapture checkresult request=" + apiReq);
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.facecapture.checkresult",
                 JSON.toJSONString(apiReq)
         );
 
-        if(logger.isInfoEnabled()){
-            logger.info("checkresult response: "+apiRespStr);
+        if (logger.isInfoEnabled()) {
+            logger.info("facecapture checkresult response: " + apiRespStr);
         }
 
         return JSON.parseObject(apiRespStr);
