@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RestController;
  * client mode controller
  *
  * @author Zhongyang MA
- */
+  */
 @CrossOrigin
 @RestController
 @RequestMapping(value = {"/api"})
@@ -96,10 +96,6 @@ public class NativeFaceCaptureController {
                 faceProductConfig.put("actionFrame", request.getJSONObject("faceProductConfig").getJSONArray("actionFrame"));
             }
             apiReq.put("productConfig", faceProductConfig);
-        }
-
-        if (logger.isInfoEnabled()) {
-            logger.info("apiReq=" + apiReq);
         }
 
         String apiRespStr = openApiClient.callOpenApi(

@@ -23,7 +23,6 @@
 var elements = document.getElementsByClassName('routerView');
 var docImageEl = document.getElementById('docImage');
 var faceImageEl = document.getElementById('faceImage');
-var faceImageElS = document.getElementById('faceImageEyeClose');
 var ekycResultEl = document.getElementById('ekycResult');
 var scoreEl = document.getElementById('score');
 var riskEl = document.getElementById('risk');
@@ -31,7 +30,6 @@ var interruptEl = document.getElementById('interrupt');
 var resultMainEl = document.getElementById('resultMain');
 var docImage = '';
 var faceImage = '';
-var faceImageEyeClose = '';
 var ekycResult = '';
 var score = '';
 var risk = '';
@@ -66,8 +64,7 @@ created = async () => {
   }
   const checkData = {
     transactionId: state,
-    isReturnImage: 'Y',
-    extraImageControlList: ['FACE_EYE_CLOSE']
+    isReturnImage: 'Y'
   }
   const result = await checkResult(checkData);
   if (result.retCode === 404) {
@@ -78,9 +75,6 @@ created = async () => {
     }
     if (result.extFaceInfo && result.extFaceInfo.faceImg) {
       faceImage = `data:image/png;base64,${result.extFaceInfo.faceImg}`;
-    }
-    if (result.extFaceInfo && result.extFaceInfo.extraImages && result.extFaceInfo.extraImages.FACE_EYE_CLOSE) {
-      faceImageEyeClose = `data:image/png;base64,${result.extFaceInfo.extraImages.FACE_EYE_CLOSE}`;
     }
     ekycResult = result.ekycResult || '-';
     score = (result.extFaceInfo && result.extFaceInfo.faceScore.toFixed(2)) || '-';
@@ -94,7 +88,6 @@ created = async () => {
     riskEl.innerHTML = this.risk;
     docImageEl.setAttribute('src', this.docImage)
     faceImageEl.setAttribute('src', this.faceImage)
-    faceImageElS.setAttribute('src', this.faceImageEyeClose)
   }
 }
 

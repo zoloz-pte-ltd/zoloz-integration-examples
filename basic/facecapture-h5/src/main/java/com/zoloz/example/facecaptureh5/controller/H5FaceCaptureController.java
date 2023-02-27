@@ -24,7 +24,6 @@ package com.zoloz.example.facecaptureh5.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-
 import com.zoloz.api.sdk.client.OpenApiClient;
 import com.zoloz.example.facecaptureh5.autoconfig.ProductConfig;
 import org.slf4j.Logger;
@@ -33,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +56,7 @@ public class H5FaceCaptureController {
     public JSONObject faceCaptureInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
         if (logger.isInfoEnabled()) {
-            logger.info("faceCaptureInit request=" + request);
+            logger.info("request=" + request);
         }
 
         String metaInfo = "MOB_H5";
@@ -98,6 +96,21 @@ public class H5FaceCaptureController {
             h5ModeConfig.put("interruptCallbackUrl", resultUrl);
         }
 
+        //serviceLevel
+        if (request.getString("serviceLevel") == null) {
+            apiReq.put("serviceLevel", productConfig.getServiceLevel());
+        } else {
+            apiReq.put("serviceLevel", request.getString("serviceLevel"));
+        }
+        if (request.getString("metaInfo") == null) {
+            apiReq.put("metaInfo", metaInfo);
+        } else {
+            apiReq.put("metaInfo", request.getString("metaInfo"));
+        }
+        apiReq.put("userId", userId);
+
+        apiReq.put("h5ModeConfig", h5ModeConfig);
+
         if (request.getJSONObject("faceProductConfig") != null) {
             Map<String, Object> faceProductConfig = new HashMap<>();
             if (request.getJSONObject("faceProductConfig").getString("livenessMode") != null) {
@@ -118,24 +131,8 @@ public class H5FaceCaptureController {
             apiReq.put("productConfig", faceProductConfig);
         }
 
-        //serviceLevel
-        if (request.getString("serviceLevel") == null) {
-            apiReq.put("serviceLevel", productConfig.getServiceLevel());
-        } else {
-            apiReq.put("serviceLevel", request.getString("serviceLevel"));
-        }
-        if (request.getString("metaInfo") == null) {
-            apiReq.put("metaInfo", metaInfo);
-        } else {
-            apiReq.put("metaInfo", request.getString("metaInfo"));
-        }
-        apiReq.put("userId", userId);
-
-        apiReq.put("h5ModeConfig", h5ModeConfig);
-
-
         if (logger.isInfoEnabled()) {
-            logger.info("facecapture initialize request=" + apiReq);
+            logger.info("request11=" + apiReq);
         }
 
         String apiRespStr = openApiClient.callOpenApi(
@@ -147,7 +144,7 @@ public class H5FaceCaptureController {
         response.put("transactionId", apiResp.getString("transactionId"));
         response.put("clientCfg", apiResp.getString("clientCfg"));
         if (logger.isInfoEnabled()) {
-            logger.info("facecapture initialize response=" + apiRespStr);
+            logger.info("response=" + apiRespStr);
         }
 
         return response;
@@ -157,7 +154,7 @@ public class H5FaceCaptureController {
     public JSONObject faceCaptureCheck(@RequestBody JSONObject request) {
 
         if (logger.isInfoEnabled()) {
-            logger.info("faceCaptureCheck request=" + request);
+            logger.info("request=" + request);
         }
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
@@ -168,15 +165,14 @@ public class H5FaceCaptureController {
         apiReq.put("bizId", businessId);
         apiReq.put("transactionId", transactionId);
         apiReq.put("isReturnImage", isReturnImage);
-        logger.info("facecapture checkresult request=" + apiReq);
 
         String apiRespStr = openApiClient.callOpenApi(
                 "v1.zoloz.facecapture.checkresult",
                 JSON.toJSONString(apiReq)
         );
 
-        if (logger.isInfoEnabled()) {
-            logger.info("facecapture checkresult response: " + apiRespStr);
+        if(logger.isInfoEnabled()){
+            logger.info("checkresult response: "+apiRespStr);
         }
 
         return JSON.parseObject(apiRespStr);
