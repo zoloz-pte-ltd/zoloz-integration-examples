@@ -20,40 +20,76 @@
  * SOFTWARE.
  */
 
-package com.zoloz.example.facecaptureh5.controller;
+package com.zoloz.example.connecth5.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
 import com.zoloz.api.sdk.client.OpenApiClient;
-import com.zoloz.example.facecaptureh5.autoconfig.ProductConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller providing APIs for front-end
  *
- * @author Zhang Fang
+ * @author He Yujie
  */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
-public class H5FaceCaptureController {
+public class H5ConnectController {
 
-    private static final Logger logger = LoggerFactory.getLogger(H5FaceCaptureController.class);
+    private static final Logger logger = LoggerFactory.getLogger(H5ConnectController.class);
 
     @Autowired
     private OpenApiClient openApiClient;
-    @Autowired
-    private ProductConfig productConfig;
 
-    @RequestMapping(value = "/facecapture/initialize", method = RequestMethod.POST)
-    public JSONObject faceCaptureInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
+    @RequestMapping(value = "/connect/enroll", method = RequestMethod.POST)
+    public JSONObject connectEnroll(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + request);
+        }
+
+        String businessId = "dummy_bizid_" + System.currentTimeMillis();
+        String userId = "dummy_userid_" + System.currentTimeMillis();
+
+        JSONObject apiReq = new JSONObject();
+        apiReq.put("bizId", businessId);
+        apiReq.put("userId", userId);
+        apiReq.put("base64ImageContent",request.get("base64ImageContent"));
+
+        if (logger.isInfoEnabled()) {
+            logger.info("request=" + apiReq);
+        }
+
+        String apiRespStr = openApiClient.callOpenApi(
+                "v1.zoloz.connect.enroll",
+                JSON.toJSONString(apiReq)
+        );
+        JSONObject apiResp = JSON.parseObject(apiRespStr);
+        JSONObject response = new JSONObject(apiResp);
+        response.put("transactionId", apiResp.getString("transactionId"));
+        if (logger.isInfoEnabled()) {
+            logger.info("response=" + apiRespStr);
+        }
+
+        return response;
+    }
+
+    @RequestMapping(value = "/connect/initialize", method = RequestMethod.POST)
+    public JSONObject connectInit(HttpServletRequest servletRequest, @RequestBody JSONObject request) throws Exception {
 
         if (logger.isInfoEnabled()) {
             logger.info("request=" + request);
@@ -66,6 +102,9 @@ public class H5FaceCaptureController {
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
+        apiReq.put("metaInfo", metaInfo);
+        apiReq.put("userId", userId);
+        apiReq.put("sceneCode",request.getOrDefault("sceneCode","test scene"));
 
         String resultUrl = String.format(
                 "%s://%s:%d/result.html",
@@ -95,51 +134,35 @@ public class H5FaceCaptureController {
             h5ModeConfig.put("completeCallbackUrl", resultUrl);
             h5ModeConfig.put("interruptCallbackUrl", resultUrl);
         }
-
-        //serviceLevel
-        if (request.getString("serviceLevel") == null) {
-            apiReq.put("serviceLevel", productConfig.getServiceLevel());
-        } else {
-            apiReq.put("serviceLevel", request.getString("serviceLevel"));
-        }
-        if (request.getString("metaInfo") == null) {
-            apiReq.put("metaInfo", metaInfo);
-        } else {
-            apiReq.put("metaInfo", request.getString("metaInfo"));
-        }
-        apiReq.put("userId", userId);
-
         apiReq.put("h5ModeConfig", h5ModeConfig);
 
-        if (request.getJSONObject("faceProductConfig") != null) {
+        // 参数开放
+        if (request.getJSONObject("productConfig") != null) {
             Map<String, Object> faceProductConfig = new HashMap<>();
-            if (request.getJSONObject("faceProductConfig").getString("livenessMode") != null) {
-                faceProductConfig.put("livenessMode", request.getJSONObject("faceProductConfig").getString("livenessMode"));
+            if (request.getJSONObject("productConfig").getString("livenessMode") != null) {
+                faceProductConfig.put("livenessMode", request.getJSONObject("productConfig").getString("livenessMode"));
             }
-            if (request.getJSONObject("faceProductConfig").getString("antiInjectionMode") != null) {
-                faceProductConfig.put("antiInjectionMode", request.getJSONObject("faceProductConfig").getString("antiInjectionMode"));
+            if (request.getJSONObject("productConfig").getString("antiInjectionMode") != null) {
+                faceProductConfig.put("antiInjectionMode", request.getJSONObject("productConfig").getString("antiInjectionMode"));
             }
-            if (request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItems") != null) {
-                faceProductConfig.put("actionCheckItems", request.getJSONObject("faceProductConfig").getJSONArray("actionCheckItems"));
+            if (request.getJSONObject("productConfig").getJSONArray("actionCheckItems") != null) {
+                faceProductConfig.put("actionCheckItems", request.getJSONObject("productConfig").getJSONArray("actionCheckItems"));
             }
-            if (request.getJSONObject("faceProductConfig").getString("actionRandom") != null) {
-                faceProductConfig.put("actionRandom", request.getJSONObject("faceProductConfig").getString("actionRandom"));
+            if (request.getJSONObject("productConfig").getString("actionRandom") != null) {
+                faceProductConfig.put("actionRandom", request.getJSONObject("productConfig").getString("actionRandom"));
             }
-            if (request.getJSONObject("faceProductConfig").getJSONArray("actionFrame") != null) {
-                faceProductConfig.put("actionFrame", request.getJSONObject("faceProductConfig").getJSONArray("actionFrame"));
-            }
-            if (request.getJSONObject("faceProductConfig").getString("rearCamera") != null) {
-                faceProductConfig.put("rearCamera", request.getJSONObject("faceProductConfig").getString("rearCamera"));
+            if (request.getJSONObject("productConfig").getJSONArray("actionFrame") != null) {
+                faceProductConfig.put("actionFrame", request.getJSONObject("productConfig").getJSONArray("actionFrame"));
             }
             apiReq.put("productConfig", faceProductConfig);
         }
 
         if (logger.isInfoEnabled()) {
-            logger.info("request11=" + apiReq);
+            logger.info("request=" + apiReq);
         }
 
         String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.facecapture.initialize",
+                "v1.zoloz.connect.initialize",
                 JSON.toJSONString(apiReq)
         );
         JSONObject apiResp = JSON.parseObject(apiRespStr);
@@ -153,8 +176,8 @@ public class H5FaceCaptureController {
         return response;
     }
 
-    @RequestMapping(value = "/facecapture/checkresult", method = RequestMethod.POST)
-    public JSONObject faceCaptureCheck(@RequestBody JSONObject request) {
+    @RequestMapping(value = "/connect/checkresult", method = RequestMethod.POST)
+    public JSONObject connectCheck(@RequestBody JSONObject request) {
 
         if (logger.isInfoEnabled()) {
             logger.info("request=" + request);
@@ -162,15 +185,13 @@ public class H5FaceCaptureController {
 
         String businessId = "dummy_bizid_" + System.currentTimeMillis();
         String transactionId = request.getString("transactionId");
-        String isReturnImage = request.getString("isReturnImage");
 
         JSONObject apiReq = new JSONObject();
         apiReq.put("bizId", businessId);
         apiReq.put("transactionId", transactionId);
-        apiReq.put("isReturnImage", isReturnImage);
 
         String apiRespStr = openApiClient.callOpenApi(
-                "v1.zoloz.facecapture.checkresult",
+                "v1.zoloz.connect.checkresult",
                 JSON.toJSONString(apiReq)
         );
 

@@ -45,10 +45,12 @@
 
         <module>basic/privacydelete-api</module>
         <module>basic/connect-native</module>
+        <module>basic/connect-h5</module>
 
         <!-- BEGIN examples of complicated combination -->
         <module>advanced/webekyc-demo</module>
         <module>advanced/nativeconnect-demo</module>
+        <module>basic/nfc-native</module>
         <!-- END examples of complicated combination -->
 
 

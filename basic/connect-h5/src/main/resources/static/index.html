@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2020 ZOLOZ PTE.LTD.
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>web-connect</title>
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+  </head>
+
+  <body>
+    <div class="routerView">
+      <div class="zNavigationBar">Scan Face</div>
+      <div class="mainContainer">
+        <div class="tipHeader">Get ready to scan your face</div>
+        <div class="imgContainer">
+          <div class="gifContainer">
+            <img class="faceGuideImage" src="./image/faceguide.gif" />
+          </div>
+        </div>
+        <div class="tipHeader">Scan face tips</div>
+        <div class="tipText">
+          &nbsp;&nbsp;· Make sure you're in a well-lit room<br />&nbsp;&nbsp;·
+          Place your face within the frame<br />&nbsp;&nbsp;· Wait a few seconds
+          for automatic scanning
+        </div>
+      </div>
+      <div class="selectContainer">
+        <div class="selectBtnDiv">
+          <label>Scene:</label>
+          <select class="selectBtn" id="sceneCode">
+            <option value="" selected disabled>SCENE</option>
+          </select>
+        </div>
+        <div class="selectBtnDiv">
+          <label>Mode:</label>
+          <select class="selectBtn" id="livenessMode"></select>
+        </div>
+        <div class="selectBtnDiv">
+          <label>Anti-Injection Mode:</label>
+          <select class="selectBtn" id="antiInjectionMode"></select>
+        </div>
+        <div class="selectBtnDiv">
+          <label>Action Random:</label>
+          <select class="selectBtn" id="actionRandom"></select>
+        </div>
+      </div>
+      <div class="selectContainer checkbox" id="actionCheckItems">
+        <label>Action Check Items</label>:
+      </div>
+      <!-- <div class="selectContainer checkbox" id="actionFrame">
+        <label>Action Frame:</label>
+      </div> -->
+      <div class="footer">
+        <div>
+          <div class="zBottomButton" onclick="scanFace()">Scan Face</div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./js/utils.js"></script>
+  <script src="./pagejs/index.js"></script>
+</html>
