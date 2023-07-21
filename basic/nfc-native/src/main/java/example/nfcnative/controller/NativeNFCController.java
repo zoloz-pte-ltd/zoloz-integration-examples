@@ -41,7 +41,7 @@ import java.util.Map;
  * client mode controller
  *
  * @author Zhongyang MA
-  */
+ */
 @CrossOrigin
 @RestController
 @RequestMapping(value = {"/api"})
@@ -55,7 +55,7 @@ public class NativeNFCController {
     @Autowired
     private ProductConfig nfcConfig;
 
-    @RequestMapping(value = {"/nfc/initialize","/nfcDemoService/initialize"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/nfc/initialize", "/nfcDemoService/initialize"}, method = RequestMethod.POST)
     public JSONObject nfcInit(@RequestBody JSONObject request) {
 
         if (logger.isInfoEnabled()) {
@@ -70,8 +70,8 @@ public class NativeNFCController {
         apiReq.put("bizId", businessId);
         apiReq.put("flowType", "NFCLITE");
         apiReq.put("docType", nfcConfig.getDocType());
-        if(request.get("docType") != null){
-            apiReq.put("docType",request.get("docType"));
+        if (request.get("docType") != null) {
+            apiReq.put("docType", request.get("docType"));
         }
 
         JSONObject productConfig = new JSONObject();
@@ -97,21 +97,24 @@ public class NativeNFCController {
         // apiReq.put("pages", "1");
         apiReq.put("metaInfo", metaInfo);
         apiReq.put("userId", userId);
-        if(StringUtils.isNotBlank(nfcConfig.getServiceLevel())){
-            apiReq.put("serviceLevel",nfcConfig.getServiceLevel());
+        if (StringUtils.isNotBlank(nfcConfig.getServiceLevel())) {
+            apiReq.put("serviceLevel", nfcConfig.getServiceLevel());
         }
 
-        if(request.get("serviceLevel") != null){
-            apiReq.put("serviceLevel",request.get("serviceLevel"));
+        if (request.get("serviceLevel") != null) {
+            apiReq.put("serviceLevel", request.get("serviceLevel"));
         }
 
-        if(request.get("nfcConfig") != null){
-            JSONObject nfcConfig = JSON.parseObject(JSON.toJSONString(request.get("nfcConfig")));
-            if(request.get("docType") != null){
-                nfcConfig.put("docType",request.get("docType"));
-            }
-            apiReq.put("nfcConfig", nfcConfig);
+        JSONObject nfcConfig = new JSONObject();
+        if (request.get("nfcConfig") == null) {
+            nfcConfig.put("needClientOCR", "Y");
+        } else {
+            nfcConfig = JSON.parseObject(JSON.toJSONString(request.get("nfcConfig")));
         }
+        if (StringUtils.isNotBlank(request.getString("docType"))){
+            nfcConfig.put("docType",request.get("docType"));
+        }
+        apiReq.put("nfcConfig", nfcConfig);
 
         System.out.println("apiReq = " + apiReq);
         String apiRespStr = openApiClient.callOpenApi(
@@ -186,7 +189,7 @@ public class NativeNFCController {
     }
 
     @Data
-    public static class CheckItem{
+    public static class CheckItem {
         private String name;
     }
 }
