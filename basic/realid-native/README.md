@@ -1,7 +1,8 @@
 # ZOLOZ RealId (Native Mode) 
 
 This is an example of minimum server integrating ZOLOZ RealId (Native) solution
-> NOTE: This server needs to cooperate with a mobile app integrating ZOLOZ client SDK, check [here](http://https://github.com/zoloz-pte-ltd) to find the minimum demo app of both iOS and Android.
+> NOTE: This server needs to cooperate with a mobile app integrating ZOLOZ client SDK. We provide the source code of a minimum demo app for both [iOS](https://github.com/zoloz-pte-ltd/zoloz-demo-ios) and [Android](https://github.com/zoloz-pte-ltd/zoloz-demo-android).
+
 
 ## Build
 **Prequisites**
