@@ -53,7 +53,7 @@ checkResult = async (data) => {
 
 created = async () => {
   const response = JSON.parse(decodeURIComponent(getUrlParam('response')));
-  const state = getUrlParam('state');
+  const state = response.state;
   if (response.code === 1000 || response.code === 2006) {
     const checkData = {
       transactionId: state,
