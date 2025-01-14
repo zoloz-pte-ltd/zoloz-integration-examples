@@ -51,7 +51,7 @@ checkDocPro = async (data) => {
 
 created = async () => {
   const response = JSON.parse(decodeURIComponent(getUrlParam('response')));
-  const state = getUrlParam('state');
+  const state = response.state;
   if (response.code === 1000 || response.code === 2006) {
     const checkData = {
       transactionId: state,
@@ -60,15 +60,15 @@ created = async () => {
     if (results.retCode === 404) {
       alert('Network Error');
     } else {
-      if (results.zDocExtInfo && results.zDocExtInfo.imageContent && results.zDocExtInfo.imageContent.length) {
-        imageSrc = `data:image/png;base64,${results.zDocExtInfo.imageContent[0]}`;
+      if (results.extInfo && results.extInfo.imageContent && results.extInfo.imageContent.length) {
+        imageSrc = `data:image/png;base64,${results.extInfo.imageContent[0]}`;
       }
       result = results.result.resultCode;
-      if (results.zDocExtInfo && results.zDocExtInfo.ocrResult && results.zDocExtInfo.ocrResult.ID_NUMBER) {
-        idNumber = results.zDocExtInfo.ocrResult.ID_NUMBER;
+      if (results.extInfo && results.extInfo.ocrResult && results.extInfo.ocrResult.ID_NUMBER) {
+        idNumber = results.extInfo.ocrResult.ID_NUMBER;
       }
-      if (results.zDocExtInfo && results.zDocExtInfo.recognitionResult) {
-        recognationResult = results.zDocExtInfo.recognitionResult;
+      if (results.extInfo && results.extInfo.recognitionResult) {
+        recognationResult = results.extInfo.recognitionResult;
       }
       resultEl.innerHTML = this.result;
       idNumberEl.innerHTML = this.idNumber;
