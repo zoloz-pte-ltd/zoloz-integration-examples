@@ -19,3 +19,4 @@ test.log*
 
 # script for local test
 .scripts
+/basic/realid-native/dev_pub

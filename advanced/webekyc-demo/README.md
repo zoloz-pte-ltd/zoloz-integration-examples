@@ -1,13 +1,11 @@
-# ZOLOZ Connect (H5 Mode) 
+# ZOLOZ RealId (H5 Mode) 
 
-This is an example of minimum server allowing user to integrate ZOLOZ Connect (H5) solution
+This is an example of minimum server allowing user to integrate ZOLOZ RealId (H5) solution
 
 This example supports two authentication methods:
 
 - 2way: Public/Private Key authentication (default)
 - aksk: Access Key / Secret Key authentication
-
-Please note that you must enroll face before verify your face.
 
 ## Build
 **Prequisites**
@@ -33,7 +31,7 @@ java \
   -Dclient.id=<client_id> \
   -Dmerchant.privkey.path=<merchant_private_key_path> \
   -Dzoloz.pubkey.path=<zoloz_public_key_path> \
-  -jar target/zoloz-connect-h5-bizserver-1.0-SNAPSHOT.jar
+  -jar target/webekyc-demo-1.0-SNAPSHOT.jar
 ```
 
 or specify the public key content directly instead of specify the file path of the public key:
@@ -42,7 +40,7 @@ java \
   -Dclient.id=<client_id> \
   -Dmerchant.privkey.path=<merchant_private_key_path> \
   -Dzoloz.pubkey=<zoloz_public_key_base64_content> \
-  -jar target/zoloz-connect-h5-bizserver-1.0-SNAPSHOT.jar
+  -jar target/webekyc-demo-1.0-SNAPSHOT.jar
 ```
 aksk mode
 ```shell
@@ -51,7 +49,7 @@ java \
   -Dzoloz.protoName=aksk \
   -Dzoloz.accessKey=<zoloz_accessKey> \
   -Dzoloz.secretKey=<zoloz_secretKey> \
-  -jar target/zoloz-connect-h5-bizserver-1.0-SNAPSHOT.jar
+  -jar target/webekyc-demo-1.0-SNAPSHOT.jar
 ```
 
 
@@ -73,12 +71,12 @@ It is printed in the server log with the pattern "Server started on $ip:$port", 
 2020-01-01 00:08:19.949 [] [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
 2020-01-01 00:08:19.970 [] [main] INFO  org.apache.tomcat.util.net.NioSelectorPool - Using a shared selector for servlet write/read
 2020-01-01 00:08:20.085 [] [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat started on port(s): 8080 (http)
-2020-01-01 00:08:20.099 [] [main] INFO  com.zoloz.example.facecaptureh5.ServerInfoListener - Server started on 192.168.1.5:8080
-2020-01-01 00:08:20.102 [] [main] INFO  com.zoloz.example.facecaptureh5.Application - Started Application in 7.766 seconds (JVM running for 10.232)
+2020-01-01 00:08:20.099 [] [main] INFO  com.zoloz.example.realidh5.ServerInfoListener - Server started on 192.168.1.5:8080
+2020-01-01 00:08:20.102 [] [main] INFO  com.zoloz.example.realidh5.Application - Started Application in 7.766 seconds (JVM running for 10.232)
 ```
 
-### 3. Start the H5 Connect demo from the mobile phone
-Make sure your mobile phone is in the same network with the server, visit http://\<ip\>:\<port\>/index.html (e.g. http://192.168.1.5:8080/index.html) with supported browser in your mobile phone.
+### 3. Start the H5 RealId demo from the mobile phone
+Make sure your mobile phone is in the same network with the server, visit http://\<ip\>:\<port\>/ekyc/index.html (e.g. http://192.168.1.5:8080/ekyc/index.html) with supported browser in your mobile phone.
 
 | **OS** | **Supported Browser** |
 | :---- | :---- |

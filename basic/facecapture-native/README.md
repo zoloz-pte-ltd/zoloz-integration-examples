@@ -1,6 +1,12 @@
 # ZOLOZ FaceCapture (Native Mode) 
 
 This is an example of minimum server allowing user to capture alive faces in mobile app.
+
+This example supports two authentication methods:
+
+- 2way: Public/Private Key authentication (default)
+- aksk: Access Key / Secret Key authentication
+
 > NOTE: This server needs to cooperate with a mobile app integrating ZOLOZ client SDK, check the sample code of minimum demo apps below:
 > - [Minimum demo app of iOS](https://github.com/zoloz-pte-ltd/zoloz-demo-ios)
 > - [Minimum demo app of Android](https://github.com/zoloz-pte-ltd/zoloz-demo-android)
@@ -23,6 +29,8 @@ mvn package
 
 ### 1. Launch the server
 Execute following command (on local machine typically):
+
+2way mode
 ```shell
 java \
   -Dclient.id=<client_id> \
@@ -39,6 +47,16 @@ java \
   -Dzoloz.pubkey=<zoloz_public_key_base64_content> \
   -jar target/zoloz-facecapture-native-bizserver-1.0-SNAPSHOT.jar
 ```
+aksk mode
+```shell
+java \
+  -Dclient.id=<client_id> \
+  -Dzoloz.protoName=aksk \
+  -Dzoloz.accessKey=<zoloz_accessKey> \
+  -Dzoloz.secretKey=<zoloz_secretKey> \
+  -jar target/zoloz-facecapture-native-bizserver-1.0-SNAPSHOT.jar
+```
+
 
 ### 2. Find the endpoint of the server
 

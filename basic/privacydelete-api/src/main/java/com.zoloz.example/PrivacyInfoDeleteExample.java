@@ -46,75 +46,128 @@ import org.slf4j.LoggerFactory;
 public class PrivacyInfoDeleteExample {
 
     private static final Logger logger = LoggerFactory.getLogger(PrivacyInfoDeleteExample.class);
+    // Protocol type constants
+    private static final String TWOWAY_PROTO = "2way";
+    private static final String AKSK_PROTO = "aksk";
 
     public static void main(String[] args) {
-
         ParserConfig.getGlobalInstance().setSafeMode(true);
 
-        // create Options object
+        // Create command line options
         Options options = new Options();
-        options.addOption("c", true, "The client id");
-        options.addOption("p", true, "The base64 content of the zoloz public key");
-        options.addOption("k", true, "The path of the merchant private key");
-        options.addOption("t", true, "The transaction id");
-        options.addOption(new Option("e", true, "The endpoint of the zoloz service") {{
+        options.addOption("c", true, "Client ID");
+        options.addOption("n", true, "Protocol type (twoway/aksk), default: twoway");
+        options.addOption("p", true, "Base64-encoded Zoloz public key (required for twoway)");
+        options.addOption("k", true, "Path to merchant private key file (required for twoway)");
+        options.addOption("a", true, "Access key (required for aksk)");
+        options.addOption("s", true, "Secret key (required for aksk)");
+        options.addOption("t", true, "Transaction ID");
+        options.addOption(new Option("e", true, "Zoloz service endpoint (optional)") {{
             setRequired(false);
         }});
 
-        CommandLine cmd = null;
+        CommandLine cmd;
         try {
             cmd = new DefaultParser().parse(options, args);
-        }
-        catch (ParseException ex) {
-            // automatically generate the help statement
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp( "facecompare " +
-                            "-c <client_id> " +
-                            "-p <zoloz_public_key_content> " +
-                            "-k <merchant_private_key_path> " +
-                            "-t <transaction_id> " +
-                            "[-e <zoloz_service_endpoint>]",
-                    options );
+        } catch (ParseException ex) {
+            printHelp(options);
             System.exit(-1);
+            return;
         }
 
-        // initialize OpenApiClient
-        String clientId = cmd.getOptionValue("c");
-        String zolozPublicKey = cmd.getOptionValue("p");
-        String merchantPrivateKeyPath = cmd.getOptionValue("k");
-        String merchantPrivateKey = KeyUtil.loadKeyContent(merchantPrivateKeyPath);
-        String endpointUrl = cmd.getOptionValue("e", "https://sg-production-api.zoloz.com");
+        // Validate required parameters
+        if (!cmd.hasOption("c") || !cmd.hasOption("t")) {
+            printHelp(options);
+            System.exit(-1);
+            return;
+        }
 
-        // construct with signature and encryption by default
+        // Get protocol type (default to twoway)
+        String protoName = cmd.getOptionValue("n", TWOWAY_PROTO);
+
+        // Validate parameters based on protocol type
+        if (TWOWAY_PROTO.equalsIgnoreCase(protoName)) {
+            if (!cmd.hasOption("p") || !cmd.hasOption("k")) {
+                logger.error("For twoway protocol, both -p (public key) and -k (private key path) are required!");
+                printHelp(options);
+                System.exit(-1);
+                return;
+            }
+        } else if (AKSK_PROTO.equalsIgnoreCase(protoName)) {
+            if (!cmd.hasOption("a") || !cmd.hasOption("s")) {
+                logger.error("For aksk protocol, both -a (access key) and -s (secret key) are required!");
+                printHelp(options);
+                System.exit(-1);
+                return;
+            }
+        } else {
+            logger.error("Unsupported protocol: {}", protoName);
+            System.exit(-1);
+            return;
+        }
+
+        // Initialize OpenApiClient
+        String clientId = cmd.getOptionValue("c");
+        String endpointUrl = cmd.getOptionValue("e", "https://sg-sandbox-api.zoloz.com/");
+        String transactionId = cmd.getOptionValue("t");
+
         OpenApiClient client = new OpenApiClient();
         client.setHostUrl(endpointUrl);
         client.setClientId(clientId);
-        client.setMerchantPrivateKey(merchantPrivateKey);
-        client.setOpenApiPublicKey(zolozPublicKey);
-        //client.setSigned(false);     // signature (of response) validation can be turned off
-        //client.setEncrypted(false);  // encryption can be turned off
+        client.setProtoName(protoName);
 
-        // initialize PrivacyInfoDeleteApi
-        PrivacyInfoDeleteApi deleteApi = new PrivacyInfoDeleteApi(client);
+        // Configure credentials based on protocol type
+        if (TWOWAY_PROTO.equalsIgnoreCase(protoName)) {
+            String zolozPublicKey = cmd.getOptionValue("p");
+            String merchantPrivateKeyPath = cmd.getOptionValue("k");
+            String merchantPrivateKey = KeyUtil.loadKeyContent(merchantPrivateKeyPath);
+            client.setOpenApiPublicKey(zolozPublicKey);
+            client.setMerchantPrivateKey(merchantPrivateKey);
+        } else if (AKSK_PROTO.equalsIgnoreCase(protoName)) {
+            String accessKey = cmd.getOptionValue("a");
+            String secretKey = cmd.getOptionValue("s");
+            client.setAccessKey(accessKey);
+            client.setSecretKey(secretKey);
+        }
 
-        // get transaction id
-        String transactionId = cmd.getOptionValue("t");
+        try {
+            // Initialize API and execute request
+            PrivacyInfoDeleteApi deleteApi = new PrivacyInfoDeleteApi(client);
+            PrivacyInfoDeleteRequest request = new PrivacyInfoDeleteRequest();
+            request.setTransactionId(transactionId);
 
-        PrivacyInfoDeleteRequest request = new PrivacyInfoDeleteRequest();
-        request.setTransactionId(transactionId);
+            PrivacyInfoDeleteResponse response = deleteApi.delete(request);
 
-        // call api
-        PrivacyInfoDeleteResponse response = deleteApi.delete(request);
-
-        // log result
-        if ("S".equals(response.getResult().getResultStatus())) {
-            if (logger.isInfoEnabled()) {
-                logger.info(String.format("delete transactionId=%s success", request.getTransactionId()));
+            // Handle response
+            if ("S".equals(response.getResult().getResultStatus())) {
+                logger.info("Delete operation for transactionId={} succeeded", transactionId);
+            } else {
+                logger.error("Operation failed! Code: {}, Message: {}",
+                        response.getResult().getResultCode(),
+                        response.getResult().getResultMessage());
             }
-        } else {
-            logger.error(String.format("result code:%s, result message:%s", response.getResult().getResultCode(),
-                    response.getResult().getResultMessage()));
+        } catch (Exception e) {
+            logger.error("API call failed: {}", e.getMessage(), e);
         }
     }
 
+    private static void printHelp(Options options) {
+        new HelpFormatter().printHelp(
+                "java PrivacyInfoDeleteExample \n" +
+                        "Required Parameters:\n" +
+                        "  -c <client_id>         Client identifier\n" +
+                        "  -t <transaction_id>    Transaction ID\n" +
+                        "Protocol Selection (optional, default=twoway):\n" +
+                        "  -n twoway|aksk         Authentication protocol\n\n" +
+                        "Parameters for twoway protocol:\n" +
+                        "  -p <zoloz_public_key>  Base64-encoded Zoloz public key\n" +
+                        "  -k <private_key_path>  Path to merchant's private key file\n\n" +
+                        "Parameters for aksk protocol:\n" +
+                        "  -a <access_key>        Access key ID\n" +
+                        "  -s <secret_key>        Secret access key\n\n" +
+                        "Optional Parameters:\n" +
+                        "  -e <endpoint_url>      Service endpoint",
+                options
+        );
+    }
 }

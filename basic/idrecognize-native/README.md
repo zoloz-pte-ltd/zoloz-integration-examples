@@ -1,6 +1,12 @@
 # ZOLOZ RealId (Native Mode) 
 
 This is an example of minimum server integrating ZOLOZ ID Recognize (Native) product
+
+This example supports two authentication methods:
+
+- 2way: Public/Private Key authentication (default)
+- aksk: Access Key / Secret Key authentication
+
 > NOTE: This server needs to cooperate with a mobile app integrating ZOLOZ client SDK. We provide the source code of a minimum demo app for both [iOS](https://github.com/zoloz-pte-ltd/zoloz-demo-ios) and [Android](https://github.com/zoloz-pte-ltd/zoloz-demo-android).
 
 ## Build
@@ -21,7 +27,8 @@ mvn package
 ### Steps
 #### 1. Launch the server:
 Execute following command (on your local machine typically):
-    
+
+2way mode
 ```sh
 java \
   -Dclient.id=<client_id> \
@@ -38,7 +45,17 @@ java \
    -Dzoloz.pubkey=<zoloz_public_key_base64_content> \
    -jar target/zoloz-idrecognize-native-bizserver-1.0-SNAPSHOT.jar
  ```
- 
+
+aksk mode
+```shell
+java \
+  -Dclient.id=<client_id> \
+  -Dzoloz.protoName=aksk \
+  -Dzoloz.accessKey=<zoloz_accessKey> \
+  -Dzoloz.secretKey=<zoloz_secretKey> \
+  -jar target/zoloz-idrecognize-native-bizserver-1.0-SNAPSHOT.jar
+```
+
  ### 2. Find the endpoint of the server
  
  The endpoint consists of the ip (in local network) and the port (8080 by default). 

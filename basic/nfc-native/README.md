@@ -1,6 +1,6 @@
-# ZOLOZ RealId (Native Mode) 
+# ZOLOZ NFC (Native Mode) 
 
-This is an example of minimum server integrating ZOLOZ RealId (Native) solution
+This is an example of minimum server integrating ZOLOZ NFC (Native) solution
 
 This example supports two authentication methods:
 
@@ -87,4 +87,4 @@ java \
 ### 4. Start E-KYC flow
 Fill the inbox of "init url" with "http://\<ip\>:\<port\>", the `ip` and the `port` are values get from step 2.
 
-And then click "realid" button to start the flow.
+And then click "start" button to start the flow.

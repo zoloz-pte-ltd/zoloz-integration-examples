@@ -28,12 +28,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import util.KeyUtil;
 
-
 /**
  * auto configuraiton
  *
  * @author Zhang Fang
-  */
+ */
 @Configuration
 public class ApiClientConfig {
 
@@ -43,7 +42,7 @@ public class ApiClientConfig {
     @Value("${client.id}")
     private String clientId;
 
-    @Value("${merchant.privkey.path}")
+    @Value("${merchant.privkey.path:}")
     private String merchantPrivKeyPath;
 
     @Value("${zoloz.pubkey.path:}")
@@ -52,21 +51,38 @@ public class ApiClientConfig {
     @Value("${zoloz.pubkey:}")
     private String zolozPubKey = null;
 
+    @Value("${zoloz.protoName:2way}")
+    private String protoName;
+
+    @Value("${zoloz.accessKey:}")
+    private String accessKey;
+
+    @Value("${zoloz.secretKey:}")
+    private String secretKey;
+
+    private static final String TWOWAY_PROTO = "2way";
+
+    private static final String AKSK_PROTO = "aksk";
 
     @Bean
     public OpenApiClient client() {
-
-        if (zolozPubKey == null || zolozPubKey.isEmpty()) {
-            zolozPubKey = KeyUtil.loadKeyContent(zolozPubKeyPath);
-        }
-        String merchantPrivateKey = KeyUtil.loadKeyContent(merchantPrivKeyPath);
-
         OpenApiClient client = new OpenApiClient();
         client.setHostUrl(hostUrl);
         client.setClientId(clientId);
-        client.setOpenApiPublicKey(zolozPubKey);
-        client.setMerchantPrivateKey(merchantPrivateKey);
-
+        client.setProtoName(protoName);
+        if (TWOWAY_PROTO.equals(protoName)) {
+            if (zolozPubKey == null || zolozPubKey.isEmpty()) {
+                zolozPubKey = KeyUtil.loadKeyContent(zolozPubKeyPath);
+            }
+            String merchantPrivateKey = KeyUtil.loadKeyContent(merchantPrivKeyPath);
+            client.setOpenApiPublicKey(zolozPubKey);
+            client.setMerchantPrivateKey(merchantPrivateKey);
+        } else if (AKSK_PROTO.equals(protoName)) {
+            client.setAccessKey(accessKey);
+            client.setSecretKey(secretKey);
+        } else {
+            throw new RuntimeException("protoName is not support");
+        }
         return client;
     }
 }

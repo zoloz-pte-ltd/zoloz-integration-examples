@@ -2,6 +2,11 @@
 
 This is an example of minimum server integrating ZOLOZ RealId (H5) solution
 
+This example supports two authentication methods:
+
+- 2way: Public/Private Key authentication (default)
+- aksk: Access Key / Secret Key authentication
+
 ## Build
 **Prequisites**
 
@@ -19,6 +24,8 @@ mvn package
 
 ### 1. Launch the server
 Execute following command (on local machine typically):
+
+2way mode
 ```shell
 java \
   -Dclient.id=<client_id> \
@@ -35,6 +42,16 @@ java \
   -Dzoloz.pubkey=<zoloz_public_key_base64_content> \
   -jar target/zoloz-realid-h5-bizserver-1.0-SNAPSHOT.jar
 ```
+aksk mode
+```shell
+java \
+  -Dclient.id=<client_id> \
+  -Dzoloz.protoName=aksk \
+  -Dzoloz.accessKey=<zoloz_accessKey> \
+  -Dzoloz.secretKey=<zoloz_secretKey> \
+  -jar target/zoloz-realid-h5-bizserver-1.0-SNAPSHOT.jar
+```
+
 
 ### 2. Find the endpoint of the server
 

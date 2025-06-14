@@ -2,6 +2,11 @@
 
 This is an example of minimum server allowing user to capture valid document (such as Id card and passport) in mobile browser.
 
+This example supports two authentication methods:
+
+- 2way: Public/Private Key authentication (default)
+- aksk: Access Key / Secret Key authentication
+
 Please note that ZOLOZ IdRecognize (H5 Mode) is currently in beta.
 
 ## Build
@@ -21,6 +26,8 @@ mvn package
 
 ### 1. Launch the server
 Execute following command (on local machine typically):
+
+2way mode
 ```shell
 java \
   -Dclient.id=<client_id> \
@@ -35,6 +42,16 @@ java \
   -Dclient.id=<client_id> \
   -Dmerchant.privkey.path=<merchant_private_key_path> \
   -Dzoloz.pubkey=<zoloz_public_key_base64_content> \
+  -jar target/zoloz-idrecognize-h5-bizserver-1.0-SNAPSHOT.jar
+```
+
+aksk mode
+```shell
+java \
+  -Dclient.id=<client_id> \
+  -Dzoloz.protoName=aksk \
+  -Dzoloz.accessKey=<zoloz_accessKey> \
+  -Dzoloz.secretKey=<zoloz_secretKey> \
   -jar target/zoloz-idrecognize-h5-bizserver-1.0-SNAPSHOT.jar
 ```
 
